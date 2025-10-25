@@ -10,6 +10,7 @@ import org.example.veri_yonetimi_proje.storage.FileManager;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class HelloController {
 
@@ -48,17 +49,35 @@ public class HelloController {
 
     @FXML
     private void onYeniOgrenciEkle() {
-        Ogrenci yeni = new Ogrenci("Yeni", "Ogrenci", 10000 + ogrenciListesi.size(), 3.00f, 1, 1, 1, 'E');
-        ogrenciListesi.add(yeni);
-        tblOgrenciler.refresh();
+        String[] adlar = {"Ahmet", "Ayşe", "Mehmet", "Zeynep", "Ali", "Elif", "Murat", "Fatma", "Can", "Deniz"};
+        String[] soyadlar = {"Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Aydın", "Arslan", "Doğan", "Koç", "Öztürk"};
+        Random random = new Random();
 
-        try {
-            fileManager.append(yeni);
-            showAlert("Başarılı", "Yeni öğrenci eklendi!");
-        } catch (IOException e) {
-            showAlert("Hata", "Dosyaya yazılamadı!");
+        for (int i = 0; i < 1000; i++) {
+            String ad = adlar[random.nextInt(adlar.length)];
+            String soyad = soyadlar[random.nextInt(soyadlar.length)];
+            int no = 10000 + ogrenciListesi.size() + i;
+            float gano = (float) (Math.round(random.nextDouble() * 400) / 100.0); // 0.0 - 4.0 arası
+            int sinif = random.nextInt(4) + 1; // 1 - 4
+            int bolumSira = random.nextInt(100) + 1;
+            int baskaDeger1 = random.nextInt(10);
+            int baskaDeger2 = random.nextInt(10);
+            char cinsiyet = random.nextBoolean() ? 'E' : 'K';
+
+            Ogrenci yeni = new Ogrenci(ad, soyad, no, gano, sinif, bolumSira, baskaDeger1, cinsiyet);
+            ogrenciListesi.add(yeni);
+
+            try {
+                fileManager.append(yeni);
+            } catch (IOException e) {
+                System.err.println("Dosyaya yazılamadı: " + e.getMessage());
+            }
         }
+
+        tblOgrenciler.refresh();
+        showAlert("Başarılı", "1000 rastgele öğrenci başarıyla eklendi!");
     }
+
 
     @FXML
     private void onOgrenciGuncelle() {
