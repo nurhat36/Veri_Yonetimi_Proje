@@ -2,10 +2,14 @@ package org.example.veri_yonetimi_proje.hash;
 
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class LinearProbingHashTable implements HashTable {
     private Ogrenci[] table;
-    private boolean[] tombstone; // true => silinmiş (boş ama zincir devam etmeli)
+    private boolean[] tombstone;
     private int M;
+    private static final String FILE_PATH = "ogrenciler.txt";
 
     public LinearProbingHashTable(int size) {
         this.M = size;
@@ -21,12 +25,14 @@ public class LinearProbingHashTable implements HashTable {
     public void insert(Ogrenci o) {
         int idx = hash(o.getOgrNo());
         int start = idx;
-        while (table[idx] != null && tombstone[idx] == false) {
+        while (table[idx] != null && !tombstone[idx]) {
             idx = (idx + 1) % M;
-            if (idx == start) throw new RuntimeException("Hash table full");
+            if (idx == start) throw new RuntimeException("Hash tablosu dolu!");
         }
         table[idx] = o;
         tombstone[idx] = false;
+        System.out.println("Hash tablosu eklendi."+table[idx].getOgrNo());
+        writeToFile(o);
     }
 
     @Override
@@ -50,6 +56,7 @@ public class LinearProbingHashTable implements HashTable {
             if (table[idx] != null && table[idx].getOgrNo() == ogrNo) {
                 table[idx] = null;
                 tombstone[idx] = true;
+                rewriteFile();
                 return true;
             }
             idx = (idx + 1) % M;
@@ -66,4 +73,39 @@ public class LinearProbingHashTable implements HashTable {
                     tombstone[i] ? "(TOMBSTONE)" : "");
         }
     }
+
+    @Override
+    public void listAll() {
+        System.out.println("Tüm Öğrenciler:");
+        for (Ogrenci o : table) {
+            if (o != null)
+                System.out.println(o);
+        }
+    }
+
+    // --- Dosya İşlemleri ---
+    private void writeToFile(Ogrenci o) {
+        try (FileWriter fw = new FileWriter(FILE_PATH, true)) {
+            fw.write(o.toString() + "\n");
+        } catch (IOException e) {
+            System.out.println("Dosyaya yazılamadı: " + e.getMessage());
+        }
+    }
+
+    private void rewriteFile() {
+        try (FileWriter fw = new FileWriter(FILE_PATH, false)) {
+            for (Ogrenci o : table) {
+                if (o != null) fw.write(o.toString() + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Dosya yeniden yazılamadı: " + e.getMessage());
+        }
+    }
+    public String getDisplayValue(int index) {
+        if (table[index] == null) {
+            return tombstone[index] ? "(TOMBSTONE)" : "EMPTY";
+        }
+        return table[index].toString();
+    }
+
 }

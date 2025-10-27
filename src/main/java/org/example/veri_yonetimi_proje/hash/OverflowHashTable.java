@@ -95,4 +95,9 @@ public class OverflowHashTable implements HashTable {
                     overflow[i] == null ? "EMPTY" : String.valueOf(overflow[i].getOgrNo()));
         }
     }
+
+    @Override
+    public void listAll() {
+
+    }
 }

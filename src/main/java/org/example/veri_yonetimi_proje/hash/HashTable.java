@@ -7,4 +7,6 @@ public interface HashTable {
     Ogrenci searchByOgrNo(int ogrNo);
     boolean delete(int ogrNo); // tombstone veya remove
     void showHashTable(); // konsola veya dosyaya yaz
+
+    void listAll();
 }

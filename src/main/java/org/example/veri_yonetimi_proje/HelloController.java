@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
+import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 import org.example.veri_yonetimi_proje.storage.FileManager;
 
@@ -26,6 +26,7 @@ public class HelloController {
 
     private final ObservableList<Ogrenci> ogrenciListesi = FXCollections.observableArrayList();
     private final FileManager fileManager = new FileManager("ogrenciler.txt");
+    private final LinearProbingHashTable hashTable = new LinearProbingHashTable(13000); // 1.3 * 10000
 
     @FXML
     public void initialize() {
@@ -37,45 +38,55 @@ public class HelloController {
         colBolumSira.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getBolumSira()).asObject());
         colCinsiyet.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getCinsiyet()));
 
-        // Dosyadan verileri yükle
+        // 🔹 Dosyadan öğrencileri yükle ve hash tablosuna ekle
         try {
             List<Ogrenci> list = fileManager.readAll();
             ogrenciListesi.setAll(list);
             tblOgrenciler.setItems(ogrenciListesi);
+
+            // ✅ Hash tablosunu da doldur
+            for (Ogrenci o : list) {
+                hashTable.insert(o);
+            }
+
         } catch (IOException e) {
             showAlert("Dosya Okuma Hatası", "ogrenciler.txt dosyası okunamadı!");
         }
+
     }
 
+    // 🔹 1000 rastgele öğrenci ekleme
     @FXML
     private void onYeniOgrenciEkle() {
         String[] adlar = {"Ahmet", "Ayşe", "Mehmet", "Zeynep", "Ali", "Elif", "Murat", "Fatma", "Can", "Deniz"};
         String[] soyadlar = {"Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Aydın", "Arslan", "Doğan", "Koç", "Öztürk"};
         Random random = new Random();
 
+        int baslangicNo = 10000 + ogrenciListesi.size();
+
         for (int i = 0; i < 1000; i++) {
             String ad = adlar[random.nextInt(adlar.length)];
             String soyad = soyadlar[random.nextInt(soyadlar.length)];
-            int no = 10000 + ogrenciListesi.size() + i;
-            float gano = (float) (Math.round(random.nextDouble() * 400) / 100.0); // 0.0 - 4.0 arası
-            int sinif = random.nextInt(4) + 1; // 1 - 4
+            int no = baslangicNo + i;
+            float gano = (float) (Math.round((1.0 + random.nextDouble() * 3.0) * 100) / 100.0);
+            int sinif = random.nextInt(4) + 1;
             int bolumSira = random.nextInt(100) + 1;
-            int baskaDeger1 = random.nextInt(10);
-            int baskaDeger2 = random.nextInt(10);
+            int fakulte = random.nextInt(5) + 1;
             char cinsiyet = random.nextBoolean() ? 'E' : 'K';
 
-            Ogrenci yeni = new Ogrenci(ad, soyad, no, gano, sinif, bolumSira, baskaDeger1, cinsiyet);
+            Ogrenci yeni = new Ogrenci(ad, soyad, no, gano, sinif, bolumSira, fakulte, cinsiyet);
             ogrenciListesi.add(yeni);
-
-            try {
-                fileManager.append(yeni);
-            } catch (IOException e) {
-                System.err.println("Dosyaya yazılamadı: " + e.getMessage());
-            }
+            hashTable.insert(yeni); // ✅ Hash tablosuna da ekle
         }
 
         tblOgrenciler.refresh();
-        showAlert("Başarılı", "1000 rastgele öğrenci başarıyla eklendi!");
+
+        try {
+            fileManager.overwriteAll(ogrenciListesi);
+            showAlert("Başarılı", "1000 rastgele öğrenci başarıyla eklendi!");
+        } catch (IOException e) {
+            showAlert("Hata", "Dosyaya yazılamadı!");
+        }
     }
 
 
@@ -87,8 +98,11 @@ public class HelloController {
             return;
         }
 
-        secili.setGano(secili.getGano() + 0.1f);
+        secili.setGano(Math.min(4.0f, secili.getGano() + 0.1f));
         tblOgrenciler.refresh();
+        hashTable.delete(secili.getOgrNo());
+        hashTable.insert(secili);
+
         try {
             fileManager.overwriteAll(ogrenciListesi);
             showAlert("Başarılı", "Öğrenci güncellendi!");
@@ -106,7 +120,9 @@ public class HelloController {
         }
 
         ogrenciListesi.remove(secili);
+        hashTable.delete(secili.getOgrNo());
         tblOgrenciler.refresh();
+
         try {
             fileManager.overwriteAll(ogrenciListesi);
             showAlert("Başarılı", "Öğrenci silindi!");
@@ -129,15 +145,16 @@ public class HelloController {
     private void onNumarayaGoreAra() {
         String input = txtArama.getText().trim();
         if (input.isEmpty()) return;
+
         try {
             int no = Integer.parseInt(input);
-            Ogrenci bulunan = ogrenciListesi.stream()
-                    .filter(o -> o.getOgrNo() == no)
-                    .findFirst().orElse(null);
-            if (bulunan != null)
+            Ogrenci bulunan = hashTable.searchByOgrNo(no);
+            if (bulunan != null) {
                 tblOgrenciler.getSelectionModel().select(bulunan);
-            else
+                tblOgrenciler.scrollTo(bulunan);
+            } else {
                 showAlert("Bulunamadı", "Bu numaraya ait öğrenci yok!");
+            }
         } catch (NumberFormatException e) {
             showAlert("Hata", "Geçerli bir numara girin!");
         }
@@ -154,12 +171,17 @@ public class HelloController {
 
     @FXML
     private void onHashGoster() {
-        showAlert("Bilgi", "Hash tablosu gösterimi bu ekranda ileride eklenecek!");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 20; i++) { // ilk 50 indeks için gösterim
+            sb.append(String.format("[%d] -> %s%n", i, hashTable.getDisplayValue(i)));
+            System.out.println(String.format("[%d] -> %s%n", i, hashTable.getDisplayValue(i)));
+        }
+        showAlert("Hash Tablosu (İlk 50 Hücre)", sb.toString());
     }
 
     @FXML
     private void onAraTikla() {
-        onNumarayaGoreAra(); // hızlı arama için
+        onNumarayaGoreAra();
     }
 
     private void showAlert(String baslik, String mesaj) {
