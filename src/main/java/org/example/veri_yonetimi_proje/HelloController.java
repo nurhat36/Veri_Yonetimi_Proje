@@ -64,7 +64,7 @@ public class HelloController {
 
         int baslangicNo = 10000 + ogrenciListesi.size();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
             String ad = adlar[random.nextInt(adlar.length)];
             String soyad = soyadlar[random.nextInt(soyadlar.length)];
             int no = baslangicNo + i;
