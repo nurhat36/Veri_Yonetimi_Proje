@@ -107,5 +107,8 @@ public class LinearProbingHashTable implements HashTable {
         }
         return table[index].toString();
     }
+    public Ogrenci[] getTable() {
+        return table;
+    }
 
 }

@@ -31,6 +31,8 @@ public class Ogrenci {
     public int getSinifSira() { return sinifSira; }
     public int getSinif() { return sinif; }
     public char getCinsiyet() { return cinsiyet; }
+    public void setBolumSira(int bolumSira) { this.bolumSira = bolumSira; }
+    public void setSinifSira(int sinifSira) { this.sinifSira = sinifSira; }
 
     @Override
     public String toString() {

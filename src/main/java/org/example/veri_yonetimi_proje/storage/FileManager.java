@@ -1,6 +1,8 @@
 package org.example.veri_yonetimi_proje.storage;
 
 import org.example.veri_yonetimi_proje.model.Ogrenci;
+import org.example.veri_yonetimi_proje.model.PerformansKaydi;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,21 @@ public class FileManager {
                 bw.write(o.toString());
                 bw.newLine();
             }
+        }
+    }
+    public void writeOgrenciArray(Ogrenci[] students) throws IOException {
+        try (FileWriter fw = new FileWriter(dataFile, false)) {
+            for (Ogrenci o : students) {
+                if (o != null) {
+                    fw.write(o.toString() + "\n");
+                }
+            }
+        }
+    }
+    public void writePerformansKaydi(PerformansKaydi kayit) throws IOException {
+        // true: dosyaya ekleme (append) modunda açar
+        try (FileWriter fw = new FileWriter(dataFile, true)) {
+            fw.write(kayit.toString() + "\n");
         }
     }
 }
