@@ -7,4 +7,6 @@ module org.example.veri_yonetimi_proje {
 
     opens org.example.veri_yonetimi_proje to javafx.fxml;
     exports org.example.veri_yonetimi_proje;
+    exports org.example.veri_yonetimi_proje.Controllers;
+    opens org.example.veri_yonetimi_proje.Controllers to javafx.fxml;
 }

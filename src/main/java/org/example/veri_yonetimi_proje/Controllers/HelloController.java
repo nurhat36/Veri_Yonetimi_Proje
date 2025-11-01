@@ -1,4 +1,4 @@
-package org.example.veri_yonetimi_proje;
+package org.example.veri_yonetimi_proje.Controllers;
 
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -15,7 +15,6 @@ import org.example.veri_yonetimi_proje.model.PerformansKaydi;
 import org.example.veri_yonetimi_proje.storage.FileManager;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
