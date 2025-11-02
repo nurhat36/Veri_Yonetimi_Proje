@@ -19,6 +19,7 @@ import org.example.veri_yonetimi_proje.storage.FileManager;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -60,9 +61,13 @@ public class HelloController {
     @FXML private TableColumn<Ogrenci, Integer> colSinifSira;
     @FXML private TableColumn<Ogrenci, Character> colCinsiyet;
     @FXML private TextField txtArama;
-    private ToggleGroup selectionGroup;
-    private ToggleGroup selectionGroupBolum;
-    private ToggleGroup selectionGroupSinif;
+    @FXML
+    private ToggleGroup ogrNoGroup;
+    @FXML
+    private ToggleGroup bolumGroup;
+    @FXML
+    private ToggleGroup sinifGroup;
+    @FXML private CheckBox chkAdvancedMode;
 
     private final ObservableList<Ogrenci> ogrenciListesi = FXCollections.observableArrayList();
     private final FileManager ogrenciler_txt = new FileManager("ogrenciler.txt");
@@ -82,13 +87,13 @@ public class HelloController {
         colBolumSira.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getBolumSira()).asObject());
         colSinifSira.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSinifSira()).asObject());
         colCinsiyet.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCinsiyet()));
-        selectionGroup = new ToggleGroup();
-        Radio_bubble.setToggleGroup(selectionGroup);
-        Radio_marge.setToggleGroup(selectionGroup);
-        Radio_selection.setToggleGroup(selectionGroup);
-        Radio_Insertion.setToggleGroup(selectionGroup);
+        ogrNoGroup = new ToggleGroup();
+        Radio_bubble.setToggleGroup(ogrNoGroup);
+        Radio_marge.setToggleGroup(ogrNoGroup);
+        Radio_selection.setToggleGroup(ogrNoGroup);
+        Radio_Insertion.setToggleGroup(ogrNoGroup);
         Radio_bubble.setSelected(true);
-        selectionGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        ogrNoGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // Seçilen RadioButton nesnesini al
                 RadioButton selectedRB = (RadioButton) newValue;
@@ -99,13 +104,13 @@ public class HelloController {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
             }
         });
-        selectionGroupBolum = new ToggleGroup();
-        Radio_Bolum_bubble.setToggleGroup(selectionGroupBolum);
-        Radio_Bolum_marge.setToggleGroup(selectionGroupBolum);
-        Radio_Bolum_selection.setToggleGroup(selectionGroupBolum);
-        Radio_Bolum_Insertion.setToggleGroup(selectionGroupBolum);
+        bolumGroup = new ToggleGroup();
+        Radio_Bolum_bubble.setToggleGroup(bolumGroup);
+        Radio_Bolum_marge.setToggleGroup(bolumGroup);
+        Radio_Bolum_selection.setToggleGroup(bolumGroup);
+        Radio_Bolum_Insertion.setToggleGroup(bolumGroup);
         Radio_Bolum_selection.setSelected(true);
-        selectionGroupBolum.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        bolumGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // Seçilen RadioButton nesnesini al
                 RadioButton selectedRB = (RadioButton) newValue;
@@ -116,13 +121,13 @@ public class HelloController {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
             }
         });
-        selectionGroupSinif=new ToggleGroup();
-        Radio_Sinif_marge.setToggleGroup(selectionGroupSinif);
-        Radio_Sinif_bubble.setToggleGroup(selectionGroupSinif);
-        Radio_Sinif_Insertion.setToggleGroup(selectionGroupSinif);
-        Radio_Sinif_selection.setToggleGroup(selectionGroupSinif);
+        sinifGroup =new ToggleGroup();
+        Radio_Sinif_marge.setToggleGroup(sinifGroup);
+        Radio_Sinif_bubble.setToggleGroup(sinifGroup);
+        Radio_Sinif_Insertion.setToggleGroup(sinifGroup);
+        Radio_Sinif_selection.setToggleGroup(sinifGroup);
         Radio_Sinif_selection.setSelected(true);
-        selectionGroupSinif.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        sinifGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // Seçilen RadioButton nesnesini al
                 RadioButton selectedRB = (RadioButton) newValue;
@@ -221,26 +226,69 @@ public class HelloController {
         }
     }
     @FXML
+    private void checkcontrol(){
+        if(chkAdvancedMode.isSelected()){
+            Radio_Bolum_bubble.setDisable(true);
+            Radio_Bolum_selection.setDisable(true);
+            Radio_Bolum_Insertion.setDisable(true);
+            Radio_Bolum_marge.setDisable(true);
+            Radio_bubble.setDisable(true);
+            Radio_Insertion.setDisable(true);
+            Radio_selection.setDisable(true);
+            Radio_marge.setDisable(true);
+            Radio_Sinif_bubble.setDisable(true);
+            Radio_Sinif_selection.setDisable(true);
+            Radio_Sinif_Insertion.setDisable(true);
+            Radio_Sinif_marge.setDisable(true);
+        }else {
+            Radio_Bolum_bubble.setDisable(false);
+            Radio_Bolum_selection.setDisable(false);
+            Radio_Bolum_Insertion.setDisable(false);
+            Radio_Bolum_marge.setDisable(false);
+            Radio_bubble.setDisable(false);
+            Radio_selection.setDisable(false);
+            Radio_marge.setDisable(false);
+            Radio_Sinif_bubble.setDisable(false);
+            Radio_Sinif_selection.setDisable(false);
+            Radio_Sinif_Insertion.setDisable(false);
+            Radio_Sinif_marge.setDisable(false);
+            Radio_Insertion.setDisable(false);
+        }
+    }
+    @FXML
     private void ogr_no_sirala_hash(){
+        ArrayList<Ogrenci> arrayList = new ArrayList<>(ogrenciListesi);
+        ArrayList<Ogrenci> modernSirali = null;
+
         OgrNoAlgoritmaService algoritmaService = new OgrNoAlgoritmaService();
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
 
         // 1. Zaman ölçümü BAŞLANGICI
         long startTime = System.nanoTime();
-        if(Radio_bubble.isSelected()){
-            type="Bubble Sort (Öğrenci No)";
-            sortedStudents = algoritmaService.ogr_no_sira_bubble_sort(hashTable);
-        } else if (Radio_marge.isSelected()) {
-            type="Marge Sort (Öğrenci No)";
-            sortedStudents = algoritmaService.ogr_no_sira_merge_sort(hashTable);
-        } else if (Radio_Insertion.isSelected()) {
-            type="Insertion Sort (Öğrenci No)";
-            sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
-        } else if (Radio_selection.isSelected()) {
-            type="selection Sort (Öğrenci No)";
-            sortedStudents = algoritmaService.ogr_no_sira_selection_sort(hashTable);
+        if(chkAdvancedMode.isSelected()){
+            type="Gelişmiş modda sıralama (Öğrenci No)";
+             modernSirali = algoritmaService.ogrNoSiralaModern(arrayList);
+            System.out.println("\nModern (Collections.sort) ile sıralama:");
+            for (Ogrenci o : modernSirali) {
+                System.out.println(o.getOgrNo() + " - " + o.getIsim());
+            }
+        }else{
+            if(Radio_bubble.isSelected()){
+                type="Bubble Sort (Öğrenci No)";
+                sortedStudents = algoritmaService.ogr_no_sira_bubble_sort(hashTable);
+            } else if (Radio_marge.isSelected()) {
+                type="Marge Sort (Öğrenci No)";
+                sortedStudents = algoritmaService.ogr_no_sira_merge_sort(hashTable);
+            } else if (Radio_Insertion.isSelected()) {
+                type="Insertion Sort (Öğrenci No)";
+                sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
+            } else if (Radio_selection.isSelected()) {
+                type="selection Sort (Öğrenci No)";
+                sortedStudents = algoritmaService.ogr_no_sira_selection_sort(hashTable);
+            }
         }
+
 
         // 2. Sıralama işlemini gerçekleştir
 
@@ -269,22 +317,37 @@ public class HelloController {
             showAlert("Hata", "Performans dosyasına yazılamadı!");
             e.printStackTrace();
         }
+        if(chkAdvancedMode.isSelected()){
+            try {
+                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+                if(modernSirali!=null){
+                    ogr_no_sira_txt.writeOgrencimodern(modernSirali);
+                }
+
+                showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
+            } catch (IOException e) {
+                showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
+            for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
+                System.out.println(sortedStudents[i].getOgrNo());
+            }
+
+            // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+            try {
+                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+                ogr_no_sira_txt.writeOgrenciArray(sortedStudents);
+                showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
+            } catch (IOException e) {
+                showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 
         // 6. Konsola yazdırma (Mevcut kod)
-        System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
-        for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
-            System.out.println(sortedStudents[i].getOgrNo());
-        }
 
-        // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
-        try {
-            // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
-            ogr_no_sira_txt.writeOgrenciArray(sortedStudents);
-            showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
-        } catch (IOException e) {
-            showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
     @FXML
     private void bolum_sirala_hash(){

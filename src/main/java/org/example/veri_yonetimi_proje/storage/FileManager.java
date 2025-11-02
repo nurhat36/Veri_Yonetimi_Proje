@@ -56,6 +56,15 @@ public class FileManager {
             }
         }
     }
+    public void writeOgrencimodern(ArrayList<Ogrenci> students) throws IOException {
+        try (FileWriter fw = new FileWriter(dataFile, false)) {
+            for (Ogrenci o : students) {
+                if (o != null) {
+                    fw.write(o.toString() + "\n");
+                }
+            }
+        }
+    }
     public void writePerformansKaydi(PerformansKaydi kayit) throws IOException {
         // true: dosyaya ekleme (append) modunda açar
         try (FileWriter fw = new FileWriter(dataFile, true)) {

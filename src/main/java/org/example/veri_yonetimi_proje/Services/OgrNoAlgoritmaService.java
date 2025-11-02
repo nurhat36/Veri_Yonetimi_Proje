@@ -3,6 +3,9 @@ package org.example.veri_yonetimi_proje.Services;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class OgrNoAlgoritmaService {
 
 
@@ -50,6 +53,16 @@ public class OgrNoAlgoritmaService {
 
         // 4. Sıralanmış Diziyi döndür.
         return sortedArray;
+    }
+    public ArrayList<Ogrenci> ogrNoSiralaModern(ArrayList<Ogrenci> ogrenciListesi) {
+        if (ogrenciListesi == null) return new ArrayList<>();
+        ArrayList<Ogrenci> siralanmis = new ArrayList<>(ogrenciListesi);
+        siralanmis.removeIf(o -> o == null);
+
+        // Comparator ile modern sıralama
+        siralanmis.sort(Comparator.comparingInt(Ogrenci::getOgrNo));
+
+        return siralanmis;
     }
     public Ogrenci[] ogr_no_sira_merge_sort(LinearProbingHashTable hashTable) {
         Ogrenci[] sourceArray = hashTable.getTable();
