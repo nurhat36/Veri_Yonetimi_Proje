@@ -8,7 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.example.veri_yonetimi_proje.Services.AlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.BolumAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.OgrNoAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.SinifAlgoritmaService;
 import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 import org.example.veri_yonetimi_proje.model.PerformansKaydi;
@@ -30,6 +32,24 @@ public class HelloController {
 
     @FXML
     private RadioButton Radio_selection;
+    @FXML
+    private RadioButton Radio_Bolum_marge;
+    @FXML
+    private RadioButton Radio_Bolum_bubble;
+    @FXML
+    private RadioButton Radio_Bolum_Insertion;
+
+    @FXML
+    private RadioButton Radio_Bolum_selection;
+    @FXML
+    private RadioButton Radio_Sinif_marge;
+    @FXML
+    private RadioButton Radio_Sinif_bubble;
+    @FXML
+    private RadioButton Radio_Sinif_Insertion;
+
+    @FXML
+    private RadioButton Radio_Sinif_selection;
     @FXML private TableView<Ogrenci> tblOgrenciler;
     @FXML private TableColumn<Ogrenci, Integer> colNo;
     @FXML private TableColumn<Ogrenci, String> colAd;
@@ -40,6 +60,8 @@ public class HelloController {
     @FXML private TableColumn<Ogrenci, Character> colCinsiyet;
     @FXML private TextField txtArama;
     private ToggleGroup selectionGroup;
+    private ToggleGroup selectionGroupBolum;
+    private ToggleGroup selectionGroupSinif;
 
     private final ObservableList<Ogrenci> ogrenciListesi = FXCollections.observableArrayList();
     private final FileManager ogrenciler_txt = new FileManager("ogrenciler.txt");
@@ -75,6 +97,44 @@ public class HelloController {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
             }
         });
+        selectionGroupBolum = new ToggleGroup();
+        Radio_Bolum_bubble.setToggleGroup(selectionGroupBolum);
+        Radio_Bolum_marge.setToggleGroup(selectionGroupBolum);
+        Radio_Bolum_selection.setToggleGroup(selectionGroupBolum);
+        Radio_Bolum_Insertion.setToggleGroup(selectionGroupBolum);
+        Radio_Bolum_selection.setSelected(true);
+        selectionGroupBolum.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Seçilen RadioButton nesnesini al
+                RadioButton selectedRB = (RadioButton) newValue;
+
+                // Seçilen değeri Label'a yaz
+
+            } else {
+                System.out.println("Lütfen bir seçenek belirleyiniz.");
+            }
+        });
+        selectionGroupSinif=new ToggleGroup();
+        Radio_Sinif_marge.setToggleGroup(selectionGroupSinif);
+        Radio_Sinif_bubble.setToggleGroup(selectionGroupSinif);
+        Radio_Sinif_Insertion.setToggleGroup(selectionGroupSinif);
+        Radio_Sinif_selection.setToggleGroup(selectionGroupSinif);
+        Radio_Sinif_selection.setSelected(true);
+        selectionGroupSinif.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Seçilen RadioButton nesnesini al
+                RadioButton selectedRB = (RadioButton) newValue;
+
+                // Seçilen değeri Label'a yaz
+
+            } else {
+                System.out.println("Lütfen bir seçenek belirleyiniz.");
+            }
+        });
+
+
+
+
 
         // 🔹 Dosyadan öğrencileri yükle ve hash tablosuna ekle
         try {
@@ -160,7 +220,7 @@ public class HelloController {
     }
     @FXML
     private void ogr_no_sirala_hash(){
-        AlgoritmaService algoritmaService = new AlgoritmaService();
+        OgrNoAlgoritmaService algoritmaService = new OgrNoAlgoritmaService();
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
 
@@ -218,6 +278,138 @@ public class HelloController {
         try {
             // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
             ogr_no_sira_txt.writeOgrenciArray(sortedStudents);
+            showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
+        } catch (IOException e) {
+            showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void bolum_sirala_hash(){
+        BolumAlgoritmaService algoritmaService = new BolumAlgoritmaService();
+        Ogrenci[] sortedStudents = new Ogrenci[13000];
+        String type="";
+
+        // 1. Zaman ölçümü BAŞLANGICI
+        long startTime = System.nanoTime();
+        if(Radio_Bolum_bubble.isSelected()){
+            type="Bubble Sort (Bölüm sırası)";
+            sortedStudents = algoritmaService.Bolum_sira_bubble_sort(hashTable);
+        } else if (Radio_Bolum_marge.isSelected()) {
+            type="Marge Sort (Bölüm sırası)";
+            sortedStudents = algoritmaService.Bolum_sira_merge_sort(hashTable);
+        } else if (Radio_Bolum_Insertion.isSelected()) {
+            type="Insertion Sort (Bölüm sırası)";
+            sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
+        } else if (Radio_Bolum_selection.isSelected()) {
+            type="selection Sort (Bölüm sırası)";
+            sortedStudents = algoritmaService.Bolum_sira_selection_sort(hashTable);
+        }
+
+        // 2. Sıralama işlemini gerçekleştir
+
+
+        // 3. Zaman ölçümü SONU
+        long endTime = System.nanoTime();
+
+        // Süreyi hesapla (saniye cinsinden)
+        double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
+
+        // 4. Performans Kaydını oluştur
+        String timestamp = LocalDateTime.now().toString();
+        PerformansKaydi kayit = new PerformansKaydi(
+                timestamp,
+                "Sıralama",
+                type,
+                durationInSeconds,
+                sortedStudents.length // Sıralanan veri boyutu
+        );
+
+        // 5. Performans kaydını dosyaya yaz
+        try {
+            performans_txt.writePerformansKaydi(kayit);
+            System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
+        } catch (IOException e) {
+            showAlert("Hata", "Performans dosyasına yazılamadı!");
+            e.printStackTrace();
+        }
+
+        // 6. Konsola yazdırma (Mevcut kod)
+        System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
+        for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
+            System.out.println(sortedStudents[i].getOgrNo());
+        }
+
+        // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+        try {
+            // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+            bolum_sira_txt.writeOgrenciArray(sortedStudents);
+            showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
+        } catch (IOException e) {
+            showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void sinif_sirala_hash(){
+        SinifAlgoritmaService algoritmaService = new SinifAlgoritmaService();
+        Ogrenci[] sortedStudents = new Ogrenci[13000];
+        String type="";
+
+        // 1. Zaman ölçümü BAŞLANGICI
+        long startTime = System.nanoTime();
+        if(Radio_Sinif_bubble.isSelected()){
+            type="Bubble Sort (sinif sırası)";
+            sortedStudents = algoritmaService.Sinif_sira_bubble_sort(hashTable);
+        } else if (Radio_Sinif_marge.isSelected()) {
+            type="Marge Sort (sinif sırası)";
+            sortedStudents = algoritmaService.Sinif_sira_merge_sort(hashTable);
+        } else if (Radio_Sinif_Insertion.isSelected()) {
+            type="Insertion Sort (sinif sırası)";
+            sortedStudents = algoritmaService.Sinif_sira_insertion_sort(hashTable);
+        } else if (Radio_Sinif_selection.isSelected()) {
+            type="selection Sort (sinif sırası)";
+            sortedStudents = algoritmaService.Sinif_sira_selection_sort(hashTable);
+        }
+
+        // 2. Sıralama işlemini gerçekleştir
+
+
+        // 3. Zaman ölçümü SONU
+        long endTime = System.nanoTime();
+
+        // Süreyi hesapla (saniye cinsinden)
+        double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
+
+        // 4. Performans Kaydını oluştur
+        String timestamp = LocalDateTime.now().toString();
+        PerformansKaydi kayit = new PerformansKaydi(
+                timestamp,
+                "Sıralama",
+                type,
+                durationInSeconds,
+                sortedStudents.length // Sıralanan veri boyutu
+        );
+
+        // 5. Performans kaydını dosyaya yaz
+        try {
+            performans_txt.writePerformansKaydi(kayit);
+            System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
+        } catch (IOException e) {
+            showAlert("Hata", "Performans dosyasına yazılamadı!");
+            e.printStackTrace();
+        }
+
+        // 6. Konsola yazdırma (Mevcut kod)
+        System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
+        for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
+            System.out.println(sortedStudents[i].getOgrNo());
+        }
+
+        // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+        try {
+            // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+            sinif_sira_txt.writeOgrenciArray(sortedStudents);
             showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
         } catch (IOException e) {
             showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
