@@ -105,6 +105,7 @@
                     <TableColumn fx:id="colGano" prefWidth="80" text="GANO" />
                     <TableColumn fx:id="colSinif" prefWidth="80" text="Sınıf" />
                     <TableColumn fx:id="colBolumSira" prefWidth="112.0" text="Bölüm Sırası" />
+                    <TableColumn fx:id="colSinifSira" prefWidth="112.0" text="Sınıf Sırası" />
                     <TableColumn fx:id="colCinsiyet" prefWidth="68.0" text="Cinsiyet" />
                 </columns>
             </TableView>

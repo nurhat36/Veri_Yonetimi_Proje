@@ -57,6 +57,7 @@ public class HelloController {
     @FXML private TableColumn<Ogrenci, Float> colGano;
     @FXML private TableColumn<Ogrenci, Integer> colSinif;
     @FXML private TableColumn<Ogrenci, Integer> colBolumSira;
+    @FXML private TableColumn<Ogrenci, Integer> colSinifSira;
     @FXML private TableColumn<Ogrenci, Character> colCinsiyet;
     @FXML private TextField txtArama;
     private ToggleGroup selectionGroup;
@@ -79,6 +80,7 @@ public class HelloController {
         colGano.setCellValueFactory(cellData -> new SimpleFloatProperty(cellData.getValue().getGano()).asObject());
         colSinif.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSinif()).asObject());
         colBolumSira.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getBolumSira()).asObject());
+        colSinifSira.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSinifSira()).asObject());
         colCinsiyet.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCinsiyet()));
         selectionGroup = new ToggleGroup();
         Radio_bubble.setToggleGroup(selectionGroup);
@@ -410,6 +412,9 @@ public class HelloController {
         try {
             // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
             sinif_sira_txt.writeOgrenciArray(sortedStudents);
+            ogrenciler_txt.writeOgrenciArray(sortedStudents);
+            ogrenciListesi.setAll(sortedStudents);
+            tblOgrenciler.setItems(ogrenciListesi);
             showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
         } catch (IOException e) {
             showAlert("Hata", "Dosyaya yazma işlemi sırasında hata oluştu: " + e.getMessage());
