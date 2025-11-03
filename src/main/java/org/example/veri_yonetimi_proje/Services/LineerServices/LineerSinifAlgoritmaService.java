@@ -1,9 +1,9 @@
-package org.example.veri_yonetimi_proje.Services;
+package org.example.veri_yonetimi_proje.Services.LineerServices;
 
 import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 
-public class SinifAlgoritmaService {
+public class LineerSinifAlgoritmaService {
     private Ogrenci[] getCompressedArray(LinearProbingHashTable hashTable) {
         Ogrenci[] sourceArray = hashTable.getTable();
 

@@ -21,6 +21,7 @@ public class OverflowHashTable implements HashTable {
         overflow = new Ogrenci[overflowSize];
     }
 
+
     private int hash(int k) {
         return Math.abs(k) % M;
     }
@@ -99,5 +100,13 @@ public class OverflowHashTable implements HashTable {
     @Override
     public void listAll() {
 
+    }
+
+    public Ogrenci[] getPrimary() {
+        return primary;
+    }
+
+    public Ogrenci[] getOverflow() {
+        return overflow;
     }
 }

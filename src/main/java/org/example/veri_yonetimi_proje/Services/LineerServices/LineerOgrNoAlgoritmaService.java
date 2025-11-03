@@ -1,10 +1,12 @@
-package org.example.veri_yonetimi_proje.Services;
+package org.example.veri_yonetimi_proje.Services.LineerServices;
 
-import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
+import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 
-public class BolumAlgoritmaService {
-    public Ogrenci[] Bolum_sira_bubble_sort(LinearProbingHashTable hashTable) {
+public class LineerOgrNoAlgoritmaService {
+
+
+    public Ogrenci[] ogr_no_sira_bubble_sort(LinearProbingHashTable hashTable) {
 
         Ogrenci[] sourceArray = hashTable.getTable();
 
@@ -36,7 +38,7 @@ public class BolumAlgoritmaService {
             for (int j = 0; j < n - i - 1; j++) {
 
                 // Öğrenci numarasına göre karşılaştırma
-                if (sortedArray[j].getGano() > sortedArray[j + 1].getGano()) {
+                if (sortedArray[j].getOgrNo() > sortedArray[j + 1].getOgrNo()) {
 
                     // Yer değiştirme (Swap)
                     Ogrenci temp = sortedArray[j];
@@ -45,14 +47,12 @@ public class BolumAlgoritmaService {
                 }
             }
         }
-        for (int i = 1; i <= n; i++) {
-            sortedArray[i-1].setBolumSira(i);
-        }
 
         // 4. Sıralanmış Diziyi döndür.
         return sortedArray;
     }
-    public Ogrenci[] Bolum_sira_merge_sort(LinearProbingHashTable hashTable) {
+
+    public Ogrenci[] ogr_no_sira_merge_sort(LinearProbingHashTable hashTable) {
         Ogrenci[] sourceArray = hashTable.getTable();
 
         // 1. Veri Sıkıştırma (Bubble Sort ile aynı ilk adımlar)
@@ -77,9 +77,6 @@ public class BolumAlgoritmaService {
 
         // 2. Merge Sort Uygulama
         mergeSort(mergedArray, actualSize);
-        for (int i = 1; i <= mergedArray.length; i++) {
-            mergedArray[i-1].setBolumSira(i);
-        }
 
         return mergedArray;
     }
@@ -117,7 +114,7 @@ public class BolumAlgoritmaService {
         // Sol ve sağ dizilerde eleman olduğu sürece karşılaştır
         while (i < left && j < right) {
             // ogrNo'ya göre küçükten büyüğe sıralama
-            if (l[i].getGano() >= r[j].getGano()) {
+            if (l[i].getOgrNo() <= r[j].getOgrNo()) {
                 a[k++] = l[i++];
             } else {
                 a[k++] = r[j++];
@@ -164,19 +161,16 @@ public class BolumAlgoritmaService {
             int j = i - 1;
 
             // Öğrenci numarasına göre küçükten büyüğe sıralama
-            while (j >= 0 && sortedArray[j].getGano() > key.getGano()) {
+            while (j >= 0 && sortedArray[j].getOgrNo() > key.getOgrNo()) {
                 sortedArray[j + 1] = sortedArray[j];
                 j = j - 1;
             }
             sortedArray[j + 1] = key;
         }
-        for (int i = 1; i <= n; i++) {
-            sortedArray[i-1].setBolumSira(i);
-        }
 
         return sortedArray;
     }
-    public Ogrenci[] Bolum_sira_selection_sort(LinearProbingHashTable hashTable) {
+    public Ogrenci[] ogr_no_sira_selection_sort(LinearProbingHashTable hashTable) {
         Ogrenci[] sourceArray = hashTable.getTable();
 
         // 1. Veri Sıkıştırma
@@ -205,7 +199,7 @@ public class BolumAlgoritmaService {
             // En küçük elemanın indeksini bul
             int min_idx = i;
             for (int j = i + 1; j < n; j++) {
-                if (sortedArray[j].getGano() > sortedArray[min_idx].getGano()) {
+                if (sortedArray[j].getOgrNo() < sortedArray[min_idx].getOgrNo()) {
                     min_idx = j;
                 }
             }
@@ -214,9 +208,6 @@ public class BolumAlgoritmaService {
             Ogrenci temp = sortedArray[min_idx];
             sortedArray[min_idx] = sortedArray[i];
             sortedArray[i] = temp;
-        }
-        for (int i = 1; i <= n; i++) {
-            sortedArray[i-1].setBolumSira(i);
         }
 
         return sortedArray;

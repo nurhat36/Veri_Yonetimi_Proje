@@ -56,7 +56,7 @@ public class FileManager {
             }
         }
     }
-    public void writeOgrencimodern(ArrayList<Ogrenci> students) throws IOException {
+    public void writeOgrencimodern(List<Ogrenci> students) throws IOException {
         try (FileWriter fw = new FileWriter(dataFile, false)) {
             for (Ogrenci o : students) {
                 if (o != null) {

@@ -43,7 +43,20 @@
             <Button onAction="#onTumListele" prefWidth="250.0" text="Tüm Öğrencileri Listele" />
             <Button onAction="#onHashGoster" prefWidth="250.0" text="Hash Tablosunu Göster" />
               <CheckBox fx:id="chkAdvancedMode" mnemonicParsing="false" onAction="#checkcontrol" text="Gelişmiş Mod Aktif" />
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Gelişmiş mod seçiliyken başla butonuna basmanız yeterlidir." wrappingWidth="223.73672485351562" />
+            <!-- Hashleme Yöntemi Seçimi (Sadece Gelişmiş Mod Kapalıyken Aktif) -->
+            <Label text="Hashleme Yöntemi Seçin:" />
+            <VBox fx:id="hashYontemiBox" spacing="5" disable="false">
+                <children>
+                    <RadioButton fx:id="radioLineer" text="Lineer Probing" selected="true">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="hashYontemiGroup" />
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="radioOverflow" text="Overflow Alanı" toggleGroup="$hashYontemiGroup" />
+                </children>
+            </VBox>
+
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Gelişmiş mod seçiliyken başla butonuna basmanız yeterlidir." wrappingWidth="223.73672485351562" />
               <Label prefHeight="22.0" prefWidth="214.0" text="(Sıralama Algoritmaları) " />
 
             <!-- SIRALAMA AKORDİYONU (Gelişmiş Mod) -->

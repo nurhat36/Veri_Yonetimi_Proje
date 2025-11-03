@@ -8,10 +8,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.example.veri_yonetimi_proje.Services.BolumAlgoritmaService;
-import org.example.veri_yonetimi_proje.Services.OgrNoAlgoritmaService;
-import org.example.veri_yonetimi_proje.Services.SinifAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.HashMapServices.HashMapBolumAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.LineerServices.LineerBolumAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.LineerServices.LineerOgrNoAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.LineerServices.LineerSinifAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.OverFlowServices.OverflowBolumAlgoritmaService;
+import org.example.veri_yonetimi_proje.Services.OverFlowServices.OverflowOgrNoAlgoritmaService;
+import org.example.veri_yonetimi_proje.hash.HashMapTable;
 import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
+import org.example.veri_yonetimi_proje.hash.OverflowHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 import org.example.veri_yonetimi_proje.model.PerformansKaydi;
 import org.example.veri_yonetimi_proje.storage.FileManager;
@@ -20,6 +25,7 @@ import org.example.veri_yonetimi_proje.storage.FileManager;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -48,6 +54,10 @@ public class HelloController {
     private RadioButton Radio_Sinif_bubble;
     @FXML
     private RadioButton Radio_Sinif_Insertion;
+    @FXML
+    private RadioButton radioLineer;
+    @FXML
+    private RadioButton radioOverflow;
 
     @FXML
     private RadioButton Radio_Sinif_selection;
@@ -76,6 +86,8 @@ public class HelloController {
     private final FileManager ogr_no_sira_txt = new FileManager("ogr_no_sira.txt");
     private final FileManager performans_txt = new FileManager("performans_txt");
     private final LinearProbingHashTable hashTable = new LinearProbingHashTable(13000); // 1.3 * 10000
+    private final OverflowHashTable OverflowHashTable= new OverflowHashTable(13500,2700);
+    private final HashMapTable HashmapTable=new HashMapTable();
 
     @FXML
     public void initialize() {
@@ -204,6 +216,12 @@ public class HelloController {
             if (hashTable != null) {
                 hashTable.insert(yeni); // ✅ Hash tablosuna da ekle
             }
+            if (OverflowHashTable != null) {
+                OverflowHashTable.insert(yeni); // ✅ Hash tablosuna da ekle
+            }
+            if (HashmapTable != null) {
+                HashmapTable.insert(yeni); // ✅ Hash tablosuna da ekle
+            }
         }
 
 
@@ -240,7 +258,11 @@ public class HelloController {
             Radio_Sinif_selection.setDisable(true);
             Radio_Sinif_Insertion.setDisable(true);
             Radio_Sinif_marge.setDisable(true);
+            radioLineer.setDisable(true);
+            radioOverflow.setDisable(true);
         }else {
+            radioLineer.setDisable(false);
+            radioOverflow.setDisable(false);
             Radio_Bolum_bubble.setDisable(false);
             Radio_Bolum_selection.setDisable(false);
             Radio_Bolum_Insertion.setDisable(false);
@@ -257,10 +279,13 @@ public class HelloController {
     }
     @FXML
     private void ogr_no_sirala_hash(){
-        ArrayList<Ogrenci> arrayList = new ArrayList<>(ogrenciListesi);
-        ArrayList<Ogrenci> modernSirali = null;
 
-        OgrNoAlgoritmaService algoritmaService = new OgrNoAlgoritmaService();
+
+
+        LineerOgrNoAlgoritmaService algoritmaService = new LineerOgrNoAlgoritmaService();
+        OverflowOgrNoAlgoritmaService OverFlowAlgoritmaService=new OverflowOgrNoAlgoritmaService();
+        HashMapBolumAlgoritmaService HashMapAlgoritmaService=new HashMapBolumAlgoritmaService();
+        List<Ogrenci> modernSirali = List.of();
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
 
@@ -268,25 +293,43 @@ public class HelloController {
         long startTime = System.nanoTime();
         if(chkAdvancedMode.isSelected()){
             type="Gelişmiş modda sıralama (Öğrenci No)";
-             modernSirali = algoritmaService.ogrNoSiralaModern(arrayList);
+            modernSirali = HashMapAlgoritmaService.ogrNoSiraArtan(HashmapTable);
             System.out.println("\nModern (Collections.sort) ile sıralama:");
             for (Ogrenci o : modernSirali) {
                 System.out.println(o.getOgrNo() + " - " + o.getIsim());
             }
         }else{
-            if(Radio_bubble.isSelected()){
-                type="Bubble Sort (Öğrenci No)";
-                sortedStudents = algoritmaService.ogr_no_sira_bubble_sort(hashTable);
-            } else if (Radio_marge.isSelected()) {
-                type="Marge Sort (Öğrenci No)";
-                sortedStudents = algoritmaService.ogr_no_sira_merge_sort(hashTable);
-            } else if (Radio_Insertion.isSelected()) {
-                type="Insertion Sort (Öğrenci No)";
-                sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
-            } else if (Radio_selection.isSelected()) {
-                type="selection Sort (Öğrenci No)";
-                sortedStudents = algoritmaService.ogr_no_sira_selection_sort(hashTable);
+            if(radioLineer.isSelected()){
+                if(Radio_bubble.isSelected()){
+                    type="(Lineer) Bubble Sort (Öğrenci No)";
+                    sortedStudents = algoritmaService.ogr_no_sira_bubble_sort(hashTable);
+                } else if (Radio_marge.isSelected()) {
+                    type="(Lineer) Marge Sort (Öğrenci No)";
+                    sortedStudents = algoritmaService.ogr_no_sira_merge_sort(hashTable);
+                } else if (Radio_Insertion.isSelected()) {
+                    type="(Lineer) Insertion Sort (Öğrenci No)";
+                    sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
+                } else if (Radio_selection.isSelected()) {
+                    type="(Lineer) selection Sort (Öğrenci No)";
+                    sortedStudents = algoritmaService.ogr_no_sira_selection_sort(hashTable);
+                }
+            }else{
+                if(Radio_bubble.isSelected()){
+                    type="(OverFlow) Bubble Sort (Öğrenci No)";
+                    sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_bubble_sort(OverflowHashTable);
+                } else if (Radio_marge.isSelected()) {
+                    type="(OverFlow) Marge Sort (Öğrenci No)";
+                    sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_merge_sort(OverflowHashTable);
+                } else if (Radio_Insertion.isSelected()) {
+                    type="(OverFlow) Insertion Sort (Öğrenci No)";
+                    sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_insertion_sort(OverflowHashTable);
+                } else if (Radio_selection.isSelected()) {
+                    type="(OverFlow) selection Sort (Öğrenci No)";
+                    sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_selection_sort(OverflowHashTable);
+                }
+
             }
+
         }
 
 
@@ -351,25 +394,58 @@ public class HelloController {
     }
     @FXML
     private void bolum_sirala_hash(){
-        BolumAlgoritmaService algoritmaService = new BolumAlgoritmaService();
+        LineerBolumAlgoritmaService algoritmaService = new LineerBolumAlgoritmaService();
+        OverflowBolumAlgoritmaService overflowAlgoritmaService = new OverflowBolumAlgoritmaService();
+        HashMapBolumAlgoritmaService hashMapBolumAlgoritmaService = new HashMapBolumAlgoritmaService();
+        List<Ogrenci> ModernList=List.of();
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
+        long startTime = System.nanoTime();
+        if(chkAdvancedMode.isSelected()){
+            type="Gelişmiş modda Bolum sıralama (GANO)";
+            ModernList = hashMapBolumAlgoritmaService.Bolum_sira_azalan(HashmapTable);
+            System.out.println("\nModern (Collections.sort) ile sıralama:");
+            for (Ogrenci o : ModernList) {
+                System.out.println(o.getOgrNo() + " - " + o.getIsim());
+            }
+
+        }else{
+            if(radioLineer.isSelected()){
+                if(Radio_Bolum_bubble.isSelected()){
+                    type="(Lineer) Bubble Sort (Bölüm sırası)";
+                    sortedStudents = algoritmaService.Bolum_sira_bubble_sort(hashTable);
+                } else if (Radio_Bolum_marge.isSelected()) {
+                    type="(Lineer) Marge Sort (Bölüm sırası)";
+                    sortedStudents = algoritmaService.Bolum_sira_merge_sort(hashTable);
+                } else if (Radio_Bolum_Insertion.isSelected()) {
+                    type="(Lineer) Insertion Sort (Bölüm sırası)";
+                    sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
+                } else if (Radio_Bolum_selection.isSelected()) {
+                    type="(Lineer) selection Sort (Bölüm sırası)";
+                    sortedStudents = algoritmaService.Bolum_sira_selection_sort(hashTable);
+                }
+            }else{
+                if(Radio_Bolum_bubble.isSelected()){
+                    type="(OverFlow) Bubble Sort (Bölüm sırası)";
+                    sortedStudents = overflowAlgoritmaService.Bolum_sira_bubble_sort(OverflowHashTable);
+                } else if (Radio_Bolum_marge.isSelected()) {
+                    type="(OverFlow) Marge Sort (Bölüm sırası)";
+                    sortedStudents = overflowAlgoritmaService.Bolum_sira_merge_sort(OverflowHashTable);
+                } else if (Radio_Bolum_Insertion.isSelected()) {
+                    type="(OverFlow) Insertion Sort (Bölüm sırası)";
+                    sortedStudents = overflowAlgoritmaService.ogr_no_sira_insertion_sort(OverflowHashTable);
+                } else if (Radio_Bolum_selection.isSelected()) {
+                    type="(OverFlow) selection Sort (Bölüm sırası)";
+                    sortedStudents = overflowAlgoritmaService.Bolum_sira_selection_sort(OverflowHashTable);
+                }
+
+            }
+
+        }
 
         // 1. Zaman ölçümü BAŞLANGICI
-        long startTime = System.nanoTime();
-        if(Radio_Bolum_bubble.isSelected()){
-            type="Bubble Sort (Bölüm sırası)";
-            sortedStudents = algoritmaService.Bolum_sira_bubble_sort(hashTable);
-        } else if (Radio_Bolum_marge.isSelected()) {
-            type="Marge Sort (Bölüm sırası)";
-            sortedStudents = algoritmaService.Bolum_sira_merge_sort(hashTable);
-        } else if (Radio_Bolum_Insertion.isSelected()) {
-            type="Insertion Sort (Bölüm sırası)";
-            sortedStudents = algoritmaService.ogr_no_sira_insertion_sort(hashTable);
-        } else if (Radio_Bolum_selection.isSelected()) {
-            type="selection Sort (Bölüm sırası)";
-            sortedStudents = algoritmaService.Bolum_sira_selection_sort(hashTable);
-        }
+
+
 
         // 2. Sıralama işlemini gerçekleştir
 
@@ -399,11 +475,7 @@ public class HelloController {
             e.printStackTrace();
         }
 
-        // 6. Konsola yazdırma (Mevcut kod)
-        System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
-        for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
-            System.out.println(sortedStudents[i].getOgrNo());
-        }
+
 
         // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
         try {
@@ -417,7 +489,7 @@ public class HelloController {
     }
     @FXML
     private void sinif_sirala_hash(){
-        SinifAlgoritmaService algoritmaService = new SinifAlgoritmaService();
+        LineerSinifAlgoritmaService algoritmaService = new LineerSinifAlgoritmaService();
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
 
