@@ -88,6 +88,60 @@ public class LineerSinifAlgoritmaService {
         // Öğrenci nesneleri (referans tip) güncellendiği için sıkıştırılmış diziyi döndür
         return compressedArray;
     }
+    public Ogrenci[] Sinif_sira_quick_sort(LinearProbingHashTable hashTable) {
+        Ogrenci[] compressedArray = getCompressedArray(hashTable);
+        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
+
+        // Her sınıf grubuna Quick Sort uygula
+        for (int i = 1; i <= 4; i++) {
+            Ogrenci[] classArray = groupedArrays[i];
+            if (classArray != null && classArray.length > 0) {
+                quickSortByOgrNo(classArray, 0, classArray.length - 1);
+
+                // Sıra atama (SinifSira)
+                for (int j = 0; j < classArray.length; j++) {
+                    classArray[j].setSinifSira(j + 1);
+                }
+            }
+        }
+
+        // Öğrenciler referans olduğu için diziyi döndürmek yeterli
+        return compressedArray;
+    }
+
+// =====================================================
+// Quick Sort Yardımcı Metotları
+// =====================================================
+
+    private void quickSortByOgrNo(Ogrenci[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+            quickSortByOgrNo(arr, low, pivotIndex - 1);
+            quickSortByOgrNo(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] arr, int low, int high) {
+        int pivot = arr[high].getOgrNo(); // Pivot olarak son öğrencinin numarası alınır
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].getOgrNo() <= pivot) {
+                i++;
+                // Swap
+                Ogrenci temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // Pivot'u doğru konuma yerleştir
+        Ogrenci temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
 
     public Ogrenci[] Sinif_sira_merge_sort(LinearProbingHashTable hashTable) {
         Ogrenci[] compressedArray = getCompressedArray(hashTable);

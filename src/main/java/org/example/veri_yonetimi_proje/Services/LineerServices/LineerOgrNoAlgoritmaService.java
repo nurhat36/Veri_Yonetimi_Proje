@@ -4,6 +4,74 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 
 public class LineerOgrNoAlgoritmaService {
+    public Ogrenci[] Ogr_no_quick_sort(LinearProbingHashTable hashTable) {
+
+        Ogrenci[] sourceArray = hashTable.getTable();
+
+        // 1. Hash Table'ın iç dizisindeki dolu (null olmayan) öğrenci sayısını bul.
+        int actualSize = 0;
+        for (int i = 0; i < sourceArray.length; i++) {
+            if (sourceArray[i] != null) {
+                actualSize++;
+            }
+        }
+
+        // Eğer sıralanacak öğrenci yoksa boş bir dizi döndür.
+        if (actualSize == 0) {
+            return new Ogrenci[0];
+        }
+
+        // 2. Sadece dolu öğrencileri içerecek yeni bir dizi oluştur ve doldur (Veri sıkıştırma).
+        Ogrenci[] sortedArray = new Ogrenci[actualSize];
+        int k = 0;
+        for (int i = 0; i < sourceArray.length; i++) {
+            if (sourceArray[i] != null) {
+                sortedArray[k++] = sourceArray[i];
+            }
+        }
+
+        // 3. Quick Sort algoritmasıyla GANO'ya göre sırala
+        quickSortByGano(sortedArray, 0, sortedArray.length - 1);
+
+        // 4. Bölüm sırasını (1'den n'e kadar) ata
+        for (int i = 0; i < sortedArray.length; i++) {
+            sortedArray[i].setBolumSira(i + 1);
+        }
+
+        return sortedArray;
+    }
+
+    // --- Yardımcı Quick Sort metotları ---
+    private void quickSortByGano(Ogrenci[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+            quickSortByGano(arr, low, pivotIndex - 1);
+            quickSortByGano(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] arr, int low, int high) {
+        double pivot = arr[high].getOgrNo(); // Pivot olarak son elemanın GANO'su
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].getOgrNo() <= pivot) {
+                i++;
+
+                // Swap
+                Ogrenci temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // Pivot'u doğru konuma yerleştir
+        Ogrenci temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
 
 
     public Ogrenci[] ogr_no_sira_bubble_sort(LinearProbingHashTable hashTable) {

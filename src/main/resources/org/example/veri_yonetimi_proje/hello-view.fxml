@@ -45,9 +45,9 @@
               <CheckBox fx:id="chkAdvancedMode" mnemonicParsing="false" onAction="#checkcontrol" text="Gelişmiş Mod Aktif" />
             <!-- Hashleme Yöntemi Seçimi (Sadece Gelişmiş Mod Kapalıyken Aktif) -->
             <Label text="Hashleme Yöntemi Seçin:" />
-            <VBox fx:id="hashYontemiBox" spacing="5" disable="false">
+            <VBox fx:id="hashYontemiBox" disable="false" spacing="5">
                 <children>
-                    <RadioButton fx:id="radioLineer" text="Lineer Probing" selected="true">
+                    <RadioButton fx:id="radioLineer" selected="true" text="Lineer Probing">
                         <toggleGroup>
                             <ToggleGroup fx:id="hashYontemiGroup" />
                         </toggleGroup>
@@ -80,6 +80,11 @@
                                         </children>
                                     </VBox>
                                     <Button layoutX="153.0" layoutY="117.0" mnemonicParsing="false" onAction="#ogr_no_sirala_hash" style="-fx-background-color: #2980B9; -fx-text-fill: white;" text="BAŞLAT" />
+                           <RadioButton fx:id="Radio_Quick" layoutX="128.0" layoutY="20.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="97.0" text="Quick Sort">
+                              <toggleGroup>
+                                 <ToggleGroup fx:id="ogrNoGroup1" />
+                              </toggleGroup>
+                           </RadioButton>
                                 </children>
                             </AnchorPane>
                         </content>
@@ -103,6 +108,11 @@
                                         </children>
                                     </VBox>
                                     <Button layoutX="153.0" layoutY="117.0" mnemonicParsing="false" onAction="#bolum_sirala_hash" style="-fx-background-color: #2980B9; -fx-text-fill: white;" text="BAŞLAT" />
+                           <RadioButton fx:id="Radio_Bolum_Quick" layoutX="133.0" layoutY="20.0" mnemonicParsing="false" text="Quick Sort">
+                              <toggleGroup>
+                                 <ToggleGroup fx:id="bolumGroup1" />
+                              </toggleGroup>
+                           </RadioButton>
                                 </children>
                             </AnchorPane>
                         </content>
@@ -126,6 +136,11 @@
                                         </children>
                                     </VBox>
                                     <Button layoutX="153.0" layoutY="117.0" mnemonicParsing="false" onAction="#sinif_sirala_hash" style="-fx-background-color: #2980B9; -fx-text-fill: white;" text="BAŞLAT" />
+                           <RadioButton fx:id="Radio_Sinif_Quick" layoutX="133.0" layoutY="20.0" mnemonicParsing="false" text="Quick Sort">
+                              <toggleGroup>
+                                 <ToggleGroup fx:id="sinifGroup1" />
+                              </toggleGroup>
+                           </RadioButton>
                                 </children>
                             </AnchorPane>
                         </content>
@@ -143,7 +158,7 @@
 
     <!-- Orta Kısım -->
     <center>
-        <VBox prefHeight="632.0" prefWidth="738.0" spacing="10">
+        <VBox prefHeight="700.0" prefWidth="738.0" spacing="10">
             <padding>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
