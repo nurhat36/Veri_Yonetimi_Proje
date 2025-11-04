@@ -119,4 +119,43 @@ public class OverflowOgrNoAlgoritmaService {
 
         return all;
     }
+    // 5️⃣ Quick Sort
+    public Ogrenci[] ogr_no_sira_quick_sort(OverflowHashTable hashTable) {
+        Ogrenci[] allStudents = getAllStudents(hashTable);
+        quickSort(allStudents, 0, allStudents.length - 1);
+        return allStudents;
+    }
+
+    private void quickSort(Ogrenci[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] arr, int low, int high) {
+        int pivot = arr[high].getOgrNo();
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].getOgrNo() <= pivot) {
+                i++;
+
+                // swap
+                Ogrenci temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // pivot'u doğru yere yerleştir
+        Ogrenci temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
+
 }

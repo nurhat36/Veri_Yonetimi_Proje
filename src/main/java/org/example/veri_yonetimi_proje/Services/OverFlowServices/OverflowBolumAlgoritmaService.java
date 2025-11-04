@@ -147,4 +147,47 @@ public class OverflowBolumAlgoritmaService {
         while (i < n1) arr[k++] = L[i++];
         while (j < n2) arr[k++] = R[j++];
     }
+    // ===================== QUICK SORT =======================
+    public Ogrenci[] Bolum_sira_quick_sort(OverflowHashTable hashTable) {
+        Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
+        quickSort(ogrenciler, 0, ogrenciler.length - 1);
+
+        for (int i = 0; i < ogrenciler.length; i++) {
+            ogrenciler[i].setBolumSira(i + 1);
+        }
+
+        return ogrenciler;
+    }
+
+    private void quickSort(Ogrenci[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] arr, int low, int high) {
+        double pivot = arr[high].getGano();
+        int i = (low - 1);
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].getGano() <= pivot) {
+                i++;
+
+                // swap
+                Ogrenci temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        Ogrenci temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
+
 }

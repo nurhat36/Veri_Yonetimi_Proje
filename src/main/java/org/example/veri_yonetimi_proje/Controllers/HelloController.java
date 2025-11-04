@@ -340,6 +340,10 @@ public class HelloController {
                 } else if (Radio_selection.isSelected()) {
                     type="(OverFlow) selection Sort (Öğrenci No)";
                     sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_selection_sort(OverflowHashTable);
+                } else if (Radio_Quick.isSelected()) {
+                    type="(OverFlow) Quick Sort (Öğrenci No)";
+                    sortedStudents = OverFlowAlgoritmaService.ogr_no_sira_quick_sort(OverflowHashTable);
+
                 }
 
             }
@@ -454,6 +458,10 @@ public class HelloController {
                 } else if (Radio_Bolum_selection.isSelected()) {
                     type="(OverFlow) selection Sort (Bölüm sırası)";
                     sortedStudents = overflowAlgoritmaService.Bolum_sira_selection_sort(OverflowHashTable);
+                } else if (Radio_Bolum_Quick.isSelected()) {
+                    type="(OverFlow) Quick Sort (Bölüm sırası)";
+                    sortedStudents = overflowAlgoritmaService.Bolum_sira_quick_sort(OverflowHashTable);
+
                 }
 
             }
@@ -572,8 +580,10 @@ public class HelloController {
                 } else if (Radio_Sinif_selection.isSelected()) {
                     type="(OverFlow) selection Sort (Sınıf sırası)";
                     sortedStudents = overflowAlgoritmaService.Sinif_sira_selection_sort(OverflowHashTable);
+                }else if (Radio_Sinif_Quick.isSelected()) {
+                    type="(OverFlow) Quick Sort (Sınıf sırası)";
+                    sortedStudents = overflowAlgoritmaService.Sinif_sira_quick_sort(OverflowHashTable);
                 }
-
             }
 
         }

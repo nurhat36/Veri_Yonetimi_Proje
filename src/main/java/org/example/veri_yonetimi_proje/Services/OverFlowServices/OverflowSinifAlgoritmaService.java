@@ -193,4 +193,51 @@ public class OverflowSinifAlgoritmaService {
         while (i < left) a[k++] = l[i++];
         while (j < right) a[k++] = r[j++];
     }
+
+    public Ogrenci[] Sinif_sira_quick_sort(OverflowHashTable hashTable) {
+        Ogrenci[] compressedArray = getCompressedArray(hashTable);
+        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
+
+        for (int i = 1; i <= 4; i++) {
+            Ogrenci[] classArray = groupedArrays[i];
+            if (classArray != null && classArray.length > 0) {
+                quickSort(classArray, 0, classArray.length - 1);
+                for (int j = 0; j < classArray.length; j++) {
+                    classArray[j].setSinifSira(j + 1);
+                }
+            }
+        }
+
+        return compressedArray;
+    }
+
+    private void quickSort(Ogrenci[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] arr, int low, int high) {
+        double pivot = arr[high].getGano();
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j].getGano() >= pivot) { // büyük GANO öne gelsin
+                i++;
+                Ogrenci temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        Ogrenci temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
+    }
+
 }
