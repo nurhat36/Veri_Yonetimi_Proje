@@ -34,7 +34,7 @@ public class OverflowHashTable implements HashTable {
             return;
         }
         // primary dolu -> overflow'a ekle
-        if (overflowPtr >= overflowSize) throw new RuntimeException("Overflow dolu");
+        if (overflowPtr >= overflowSize) System.out.println("Overflow doldu nexte eklenecek");
         overflow[overflowPtr] = o;
 
         // eğer primary'nin next'i yoksa bağla, varsa sona ekle
@@ -109,4 +109,24 @@ public class OverflowHashTable implements HashTable {
     public Ogrenci[] getOverflow() {
         return overflow;
     }
+
+    public String getDisplayValue(int index) {
+        // Primary kısmı için
+        if (index < M) {
+            String ogrNo = (primary[index] == null) ? "EMPTY" : String.valueOf(primary[index].getOgrNo());
+            String nextVal = (next[index] == -1) ? "NONE" : String.valueOf(next[index]);
+            return String.format("%s (next=%s)", ogrNo, nextVal);
+        }
+
+        // Overflow kısmı için
+        int overflowIndex = index - M;
+        if (overflowIndex >= 0 && overflowIndex < overflowSize) {
+            String ogrNo = (overflow[overflowIndex] == null) ? "EMPTY" : String.valueOf(overflow[overflowIndex].getOgrNo());
+            return String.format("%s (overflow idx=%d)", ogrNo, overflowIndex);
+        }
+
+        return "INVALID INDEX";
+    }
+
+
 }

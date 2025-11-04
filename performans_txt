@@ -1,67 +1,36 @@
-2025-11-01T13:36:55.998634400,Sıralama,Bubble Sort (Öğrenci No),0,119887,10000
-2025-11-01T13:42:10.974022800,Sıralama,Merge Sort (Öğrenci No),0,003775,10000
-2025-11-01T13:51:41.771955400,Sıralama,Insertion Sort (Öğrenci No),0,061887,10000
-2025-11-01T13:52:22.293455200,Sıralama,Selection Sort (Öğrenci No),0,093724,10000
-2025-11-01T14:22:14.152263,Sıralama,Bubble Sort (Öğrenci No),0,166314,10000
-2025-11-01T14:22:17.028619700,Sıralama,Marge Sort (Öğrenci No),0,004433,10000
-2025-11-01T14:22:19.821952700,Sıralama,Insertion Sort (Öğrenci No),0,062180,10000
-2025-11-01T14:22:22.389226700,Sıralama,selection Sort (Öğrenci No),0,093414,10000
-2025-11-02T12:11:08.943312900,Sıralama,selection Sort (Bölüm sırası),0,059966,10000
-2025-11-02T12:11:11.927545700,Sıralama,Insertion Sort (Bölüm sırası),0,049383,10000
-2025-11-02T12:11:14.505446500,Sıralama,Marge Sort (Bölüm sırası),0,003699,10000
-2025-11-02T12:11:17.199128700,Sıralama,Bubble Sort (Bölüm sırası),0,105045,10000
-2025-11-02T12:38:17.363231500,Sıralama,selection Sort (Bölüm sırası),0,000108,0
-2025-11-02T12:38:23.152685400,Sıralama,selection Sort (Bölüm sırası),0,066832,10000
-2025-11-02T12:42:15.989452200,Sıralama,selection Sort (Bölüm sırası),0,058675,10000
-2025-11-02T12:42:18.458951400,Sıralama,Insertion Sort (Bölüm sırası),0,052913,10000
-2025-11-02T12:42:21.249714,Sıralama,Marge Sort (Bölüm sırası),0,004373,10000
-2025-11-02T12:42:23.929092,Sıralama,Bubble Sort (Bölüm sırası),0,115763,10000
-2025-11-02T13:03:39.849644900,Sıralama,selection Sort (Bölüm sırası),0,065256,10000
-2025-11-02T13:03:43.220851600,Sıralama,Insertion Sort (Bölüm sırası),0,053958,10000
-2025-11-02T13:03:45.524891700,Sıralama,Marge Sort (Bölüm sırası),0,006570,10000
-2025-11-02T13:03:48.121444400,Sıralama,Bubble Sort (Bölüm sırası),0,115501,10000
-2025-11-02T13:03:53.068827600,Sıralama,Bubble Sort (sinif sırası),0,032089,10000
-2025-11-02T13:03:55.562382400,Sıralama,Bubble Sort (sinif sırası),0,028104,10000
-2025-11-02T13:03:57.627018800,Sıralama,Bubble Sort (sinif sırası),0,028589,10000
-2025-11-02T13:03:59.585823200,Sıralama,Bubble Sort (sinif sırası),0,027203,10000
-2025-11-02T13:06:17.022016100,Sıralama,selection Sort (Bölüm sırası),0,062873,10000
-2025-11-02T13:06:19.897103500,Sıralama,Insertion Sort (Bölüm sırası),0,051021,10000
-2025-11-02T13:06:22.229737400,Sıralama,Marge Sort (Bölüm sırası),0,006735,10000
-2025-11-02T13:06:24.745868800,Sıralama,Bubble Sort (Bölüm sırası),0,115471,10000
-2025-11-02T13:06:27.651809600,Sıralama,selection Sort (sinif sırası),0,020308,10000
-2025-11-02T13:06:29.685590600,Sıralama,Insertion Sort (sinif sırası),0,022550,10000
-2025-11-02T13:06:32.197907400,Sıralama,Marge Sort (sinif sırası),0,006756,10000
-2025-11-02T13:06:34.485292300,Sıralama,Bubble Sort (sinif sırası),0,031968,10000
-2025-11-02T13:10:12.544844700,Sıralama,selection Sort (Bölüm sırası),0,065770,10000
-2025-11-02T13:10:15.056096800,Sıralama,Insertion Sort (Bölüm sırası),0,050823,10000
-2025-11-02T13:10:17.029599100,Sıralama,Marge Sort (Bölüm sırası),0,006490,10000
-2025-11-02T13:10:19.105190700,Sıralama,Bubble Sort (Bölüm sırası),0,113901,10000
-2025-11-02T13:10:21.980494100,Sıralama,selection Sort (sinif sırası),0,017307,10000
-2025-11-02T13:10:24.956597700,Sıralama,Insertion Sort (sinif sırası),0,022164,10000
-2025-11-02T13:10:27.524577600,Sıralama,Marge Sort (sinif sırası),0,006922,10000
-2025-11-02T13:10:29.456692200,Sıralama,Bubble Sort (sinif sırası),0,034774,10000
-2025-11-02T13:19:43.903332800,Sıralama,selection Sort (Bölüm sırası),0,087516,10000
-2025-11-02T13:19:49.265300300,Sıralama,selection Sort (sinif sırası),0,018535,10000
-2025-11-02T13:27:08.949186100,Sıralama,selection Sort (Bölüm sırası),0,101969,10000
-2025-11-02T13:27:11.656315700,Sıralama,selection Sort (sinif sırası),0,026118,10000
-2025-11-02T13:58:23.144532100,Sıralama,selection Sort (Bölüm sırası),0,120959,10000
-2025-11-02T13:58:26.396189800,Sıralama,Marge Sort (sinif sırası),0,005475,10000
-2025-11-02T14:42:11.577111600,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,033680,13000
-2025-11-02T14:51:41.869170900,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,028999,13000
-2025-11-03T22:06:11.175589700,Sıralama,(OverFlow) Bubble Sort (Öğrenci No),0,178084,10000
-2025-11-03T22:06:13.949129,Sıralama,(OverFlow) Marge Sort (Öğrenci No),0,005124,10000
-2025-11-03T22:06:16.230696100,Sıralama,(OverFlow) Insertion Sort (Öğrenci No),0,070920,10000
-2025-11-03T22:06:18.478034300,Sıralama,(OverFlow) selection Sort (Öğrenci No),0,222538,10000
-2025-11-03T23:12:12.296565,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,001721,13000
-2025-11-03T23:12:24.683275100,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,023587,13000
-2025-11-03T23:12:27.514421400,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,028147,13000
-2025-11-03T23:29:46.576157300,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,001535,13000
-2025-11-03T23:30:07.105249700,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,029655,13000
-2025-11-03T23:30:09.550010600,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,025733,13000
-2025-11-04T00:27:30.142359200,Sıralama,(Lineer) Quick Sort (Öğrenci No),0,070743,10000
-2025-11-04T00:27:33.448816200,Sıralama,(Lineer) selection Sort (Bölüm sırası),0,138248,10000
-2025-11-04T00:27:37.005293500,Sıralama,(Lineer) selection Sort (Sınıf sırası),0,029364,10000
-2025-11-04T00:32:12.924701600,Sıralama,(Lineer) Quick Sort (Öğrenci No),0,072362,10000
-2025-11-04T00:32:16.394005500,Sıralama,(Lineer) Quick Sort (Bölüm sırası),0,007464,10000
-2025-11-04T00:32:20.010157800,Sıralama,(Lineer) Quick Sort (Sınıf sırası),0,030168,10000
-2025-11-04T16:35:17.162060900,Sıralama,(Lineer) Quick Sort (Bölüm sırası),0,004579,10000
+2025-11-04T22:55:03.792137400,Sıralama,(Lineer) Bubble Sort (Öğrenci No),0,126827,10000
+2025-11-04T22:55:06.974574700,Sıralama,(Lineer) Marge Sort (Öğrenci No),0,006039,10000
+2025-11-04T22:55:09.951331400,Sıralama,(Lineer) Insertion Sort (Öğrenci No),0,062713,10000
+2025-11-04T22:55:12.896052,Sıralama,(Lineer) selection Sort (Öğrenci No),0,071291,10000
+2025-11-04T22:55:15.752105700,Sıralama,(Lineer) Quick Sort (Öğrenci No),0,079462,10000
+2025-11-04T22:55:20.153049600,Sıralama,(Lineer) selection Sort (Bölüm sırası),0,067720,10000
+2025-11-04T22:55:22.710432500,Sıralama,(Lineer) Insertion Sort (Bölüm sırası),0,101674,10000
+2025-11-04T22:55:26.568638500,Sıralama,(Lineer) Marge Sort (Bölüm sırası),0,008493,10000
+2025-11-04T22:55:29.316241400,Sıralama,(Lineer) Bubble Sort (Bölüm sırası),0,219619,10000
+2025-11-04T22:55:31.785810900,Sıralama,(Lineer) Quick Sort (Bölüm sırası),0,009796,10000
+2025-11-04T22:55:37.303418400,Sıralama,(Lineer) selection Sort (Sınıf sırası),0,024326,10000
+2025-11-04T22:55:40.785496500,Sıralama,(Lineer) Insertion Sort (Sınıf sırası),0,041720,10000
+2025-11-04T22:55:43.729137200,Sıralama,(Lineer) Marge Sort (Sınıf sırası),0,008773,10000
+2025-11-04T22:55:46.337191500,Sıralama,(Lineer) Bubble Sort (Sınıf sırası),0,048748,10000
+2025-11-04T22:55:48.657678500,Sıralama,(Lineer) Quick Sort (Sınıf sırası),0,041034,10000
+2025-11-04T22:55:56.088366100,Sıralama,(OverFlow) Bubble Sort (Öğrenci No),0,168716,10000
+2025-11-04T22:55:58.854680900,Sıralama,(OverFlow) Marge Sort (Öğrenci No),0,006122,10000
+2025-11-04T22:56:01.237262600,Sıralama,(OverFlow) Insertion Sort (Öğrenci No),0,085026,10000
+2025-11-04T22:56:04.088355,Sıralama,(OverFlow) selection Sort (Öğrenci No),0,087679,10000
+2025-11-04T22:56:06.568301900,Sıralama,(OverFlow) Quick Sort (Öğrenci No),0,079987,10000
+2025-11-04T22:56:10.441593100,Sıralama,(OverFlow) selection Sort (Bölüm sırası),0,121020,10000
+2025-11-04T22:56:12.920924300,Sıralama,(OverFlow) Insertion Sort (Bölüm sırası),0,105182,10000
+2025-11-04T22:56:15.471032700,Sıralama,(OverFlow) Marge Sort (Bölüm sırası),0,007082,10000
+2025-11-04T22:56:18.039139,Sıralama,(OverFlow) Bubble Sort (Bölüm sırası),0,279453,10000
+2025-11-04T22:56:21.289842300,Sıralama,(OverFlow) Quick Sort (Bölüm sırası),0,009110,10000
+2025-11-04T22:56:24.526597300,Sıralama,(OverFlow) selection Sort (Sınıf sırası),0,038164,10000
+2025-11-04T22:56:27.125753600,Sıralama,(OverFlow) Insertion Sort (Sınıf sırası),0,029767,10000
+2025-11-04T22:56:37.743358700,Sıralama,(OverFlow) Marge Sort (Sınıf sırası),0,007399,10000
+2025-11-04T22:56:40.113855,Sıralama,(OverFlow) Bubble Sort (Sınıf sırası),0,073851,10000
+2025-11-04T22:56:42.980774100,Sıralama,(OverFlow) Quick Sort (Sınıf sırası),0,004289,10000
+2025-11-04T22:56:54.372406300,Sıralama,Gelişmiş modda sıralama (Öğrenci No),0,036710,13000
+2025-11-04T22:56:58.663174400,Sıralama,Gelişmiş modda Bolum sıralama (GANO),0,047484,13000
+2025-11-04T22:57:01.815230900,Sıralama,Gelişmiş modda sınıf sıralama (GANO),0,047390,13000
+
+
+2025-11-04T23:33:54.557066500,Sıralama,(Lineer) Bubble Sort (Öğrenci No),0,115853,10000

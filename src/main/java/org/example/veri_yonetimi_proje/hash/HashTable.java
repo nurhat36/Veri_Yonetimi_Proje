@@ -9,4 +9,6 @@ public interface HashTable {
     void showHashTable(); // konsola veya dosyaya yaz
 
     void listAll();
+
+    String getDisplayValue(int i);
 }

@@ -7,7 +7,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.example.veri_yonetimi_proje.HelloApplication;
 import org.example.veri_yonetimi_proje.Services.HashMapServices.HashMapBolumAlgoritmaService;
 import org.example.veri_yonetimi_proje.Services.LineerServices.LineerBolumAlgoritmaService;
 import org.example.veri_yonetimi_proje.Services.LineerServices.LineerOgrNoAlgoritmaService;
@@ -93,7 +102,7 @@ public class HelloController {
     private final FileManager ogr_no_sira_txt = new FileManager("ogr_no_sira.txt");
     private final FileManager performans_txt = new FileManager("performans_txt");
     private final LinearProbingHashTable hashTable = new LinearProbingHashTable(13000); // 1.3 * 10000
-    private final OverflowHashTable OverflowHashTable= new OverflowHashTable(13500,2700);
+    private final OverflowHashTable OverflowHashTable= new OverflowHashTable(6500,6500);
     private final HashMapTable HashmapTable=new HashMapTable();
 
     @FXML
@@ -270,6 +279,9 @@ public class HelloController {
             Radio_Sinif_marge.setDisable(true);
             radioLineer.setDisable(true);
             radioOverflow.setDisable(true);
+            Radio_Bolum_Quick.setDisable(true);
+            Radio_Sinif_Quick.setDisable(true);
+            Radio_Quick.setDisable(true);
         }else {
             radioLineer.setDisable(false);
             radioOverflow.setDisable(false);
@@ -285,6 +297,9 @@ public class HelloController {
             Radio_Sinif_Insertion.setDisable(false);
             Radio_Sinif_marge.setDisable(false);
             Radio_Insertion.setDisable(false);
+            Radio_Bolum_Quick.setDisable(false);
+            Radio_Sinif_Quick.setDisable(false);
+            Radio_Quick.setDisable(false);
         }
     }
     @FXML
@@ -616,11 +631,7 @@ public class HelloController {
             e.printStackTrace();
         }
 
-        // 6. Konsola yazdırma (Mevcut kod)
-        System.out.println("Öğrenci numarasına göre sıralanmış dizinin ilk 10 elemanı:");
-        for (int i = 0; i < Math.min(10, sortedStudents.length); i++) {
-            System.out.println(sortedStudents[i].getOgrNo());
-        }
+
         if(chkAdvancedMode.isSelected()){
             try {
                 // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
@@ -740,13 +751,25 @@ public class HelloController {
 
     @FXML
     private void onHashGoster() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 20; i++) { // ilk 50 indeks için gösterim
-            sb.append(String.format("[%d] -> %s%n", i, hashTable.getDisplayValue(i)));
-            System.out.println(String.format("[%d] -> %s%n", i, hashTable.getDisplayValue(i)));
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("hash_view.fxml"));
+            Parent root = loader.load();
+
+            HashViewController controller = loader.getController();
+            controller.setTables(HashmapTable, OverflowHashTable, hashTable); // elindeki hash objelerini buraya gönder
+
+            Stage stage = new Stage();
+            stage.setTitle("Hash Tablo Görüntüleyici");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        showAlert("Hash Tablosu (İlk 50 Hücre)", sb.toString());
     }
+
+
+
 
     @FXML
     private void onAraTikla() {

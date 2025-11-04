@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.veri_yonetimi_proje.Controllers.HashViewController"
+
+      alignment="TOP_CENTER"
+      >
+
+    <!-- Üstteki Butonlar -->
+    <HBox spacing="10" alignment="CENTER" VBox.vgrow="NEVER">
+        <Button fx:id="btnGelismis" text="Gelişmiş Hash" prefWidth="150"/>
+        <Button fx:id="btnOverflow" text="Overflow Hash" prefWidth="150"/>
+        <Button fx:id="btnLineer" text="Lineer Hash" prefWidth="150"/>
+    </HBox>
+
+    <!-- Tablo -->
+    <TableView fx:id="hashTableView" prefHeight="500" prefWidth="600" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colIndex" text="Index" prefWidth="100"/>
+            <TableColumn fx:id="colValue" text="Değer" prefWidth="480"/>
+        </columns>
+    </TableView>
+
+</VBox>
