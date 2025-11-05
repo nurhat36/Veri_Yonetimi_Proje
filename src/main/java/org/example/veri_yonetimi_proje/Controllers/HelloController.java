@@ -124,10 +124,10 @@ public class HelloController {
         Radio_bubble.setSelected(true);
         ogrNoGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                // Seçilen RadioButton nesnesini al
+
                 RadioButton selectedRB = (RadioButton) newValue;
 
-                // Seçilen değeri Label'a yaz
+
 
             } else {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
@@ -142,10 +142,10 @@ public class HelloController {
         Radio_Bolum_selection.setSelected(true);
         bolumGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                // Seçilen RadioButton nesnesini al
+
                 RadioButton selectedRB = (RadioButton) newValue;
 
-                // Seçilen değeri Label'a yaz
+
 
             } else {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
@@ -160,10 +160,10 @@ public class HelloController {
         Radio_Sinif_selection.setSelected(true);
         sinifGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                // Seçilen RadioButton nesnesini al
+
                 RadioButton selectedRB = (RadioButton) newValue;
 
-                // Seçilen değeri Label'a yaz
+
 
             } else {
                 System.out.println("Lütfen bir seçenek belirleyiniz.");
@@ -174,13 +174,13 @@ public class HelloController {
 
 
 
-        // 🔹 Dosyadan öğrencileri yükle ve hash tablosuna ekle
+
         try {
             List<Ogrenci> list = ogrenciler_txt.readAll();
             ogrenciListesi.setAll(list);
             tblOgrenciler.setItems(ogrenciListesi);
 
-            // ✅ Hash tablosunu da doldur
+
             for (Ogrenci o : list) {
                 hashTable.insert(o);
             }
@@ -191,14 +191,14 @@ public class HelloController {
 
     }
 
-    // 🔹 1000 rastgele öğrenci ekleme
+
     @FXML
     private void onYeniOgrenciEkle() {
         String[] adlar = {"Ahmet", "Ayşe", "Mehmet", "Zeynep", "Ali", "Elif", "Murat", "Fatma", "Can", "Deniz"};
         String[] soyadlar = {"Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Aydın", "Arslan", "Doğan", "Koç", "Öztürk"};
         Random random = new Random();
 
-        // ogrenciListesi'nin başlangıçta null olmadığını ve başlatıldığını varsayıyoruz.
+
         int baslangicNo = 10000 + (ogrenciListesi != null ? ogrenciListesi.size() : 0);
 
         for (int i = 0; i < 10000; i++) {
@@ -206,53 +206,51 @@ public class HelloController {
             String soyad = soyadlar[random.nextInt(soyadlar.length)];
             int no = baslangicNo + i;
 
-            // GANO (1.00 ile 4.00 arası, iki ondalık hassasiyet)
+
             float gano = (float) (Math.round((1.0 + random.nextDouble() * 3.0) * 100) / 100.0);
 
-            // Sınıf (1-4 arası)
+
             int sinif = random.nextInt(4) + 1;
 
-            // Bölüm Sırası (Rastgele 1-100)
+
             int bolumSira = 0;
 
-            // Sınıf Sırası (Rastgele 1-100)
-            // 'sinifSira' alanı için rastgele bir değer ekledik.
+
             int sinifSira =0;
 
             char cinsiyet = random.nextBoolean() ? 'E' : 'K';
 
-            // OGRENCI CONSTRUCTOR SIRALAMASI:
-            // (isim, soyad, ogrNo, gano, bolumSira, sinifSira, sinif, cinsiyet)
+
             Ogrenci yeni = new Ogrenci(
                     ad, soyad, no, gano,
                     bolumSira, sinifSira, sinif, cinsiyet
             );
 
-            // ogrenciListesi ve hashTable'ın null kontrolünü ekleyebilirsiniz
+
             if (ogrenciListesi != null) {
                 ogrenciListesi.add(yeni);
             }
             if (hashTable != null) {
-                hashTable.insert(yeni); // ✅ Hash tablosuna da ekle
+                hashTable.insert(yeni);
             }
             if (OverflowHashTable != null) {
-                OverflowHashTable.insert(yeni); // ✅ Hash tablosuna da ekle
+                OverflowHashTable.insert(yeni);
             }
             if (HashmapTable != null) {
-                HashmapTable.insert(yeni); // ✅ Hash tablosuna da ekle
+                HashmapTable.insert(yeni);
             }
         }
 
 
 
 
-        // Tabloyu güncelle
+
         if (tblOgrenciler != null) {
             tblOgrenciler.refresh();
         }
 
 
-        // Dosyaya yazma işlemi
+
         try {
             if (ogrenciler_txt != null && ogrenciListesi != null) {
                 ogrenciler_txt.overwriteAll(ogrenciListesi);
@@ -314,7 +312,7 @@ public class HelloController {
         Ogrenci[] sortedStudents = new Ogrenci[13000];
         String type="";
 
-        // 1. Zaman ölçümü BAŞLANGICI
+
         long startTime = System.nanoTime();
         if(chkAdvancedMode.isSelected()){
             type="Gelişmiş modda sıralama (Öğrenci No)";
@@ -366,16 +364,12 @@ public class HelloController {
         }
 
 
-        // 2. Sıralama işlemini gerçekleştir
 
-
-        // 3. Zaman ölçümü SONU
         long endTime = System.nanoTime();
 
-        // Süreyi hesapla (saniye cinsinden)
         double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
 
-        // 4. Performans Kaydını oluştur
+
         String timestamp = LocalDateTime.now().toString();
         PerformansKaydi kayit = new PerformansKaydi(
                 timestamp,
@@ -385,7 +379,7 @@ public class HelloController {
                 sortedStudents.length // Sıralanan veri boyutu
         );
 
-        // 5. Performans kaydını dosyaya yaz
+
         try {
             performans_txt.writePerformansKaydi(kayit);
             System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
@@ -395,7 +389,7 @@ public class HelloController {
         }
         if(chkAdvancedMode.isSelected()){
             try {
-                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+
                 if(modernSirali!=null){
                     ogr_no_sira_txt.writeOgrencimodern(modernSirali);
                 }
@@ -411,9 +405,9 @@ public class HelloController {
                 System.out.println(sortedStudents[i].getOgrNo());
             }
 
-            // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+
             try {
-                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+
                 ogr_no_sira_txt.writeOgrenciArray(sortedStudents);
                 showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
             } catch (IOException e) {
@@ -422,7 +416,7 @@ public class HelloController {
             }
         }
 
-        // 6. Konsola yazdırma (Mevcut kod)
+
 
     }
     @FXML
@@ -483,20 +477,11 @@ public class HelloController {
 
         }
 
-        // 1. Zaman ölçümü BAŞLANGICI
 
-
-
-        // 2. Sıralama işlemini gerçekleştir
-
-
-        // 3. Zaman ölçümü SONU
         long endTime = System.nanoTime();
 
-        // Süreyi hesapla (saniye cinsinden)
         double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
 
-        // 4. Performans Kaydını oluştur
         String timestamp = LocalDateTime.now().toString();
         PerformansKaydi kayit = new PerformansKaydi(
                 timestamp,
@@ -506,7 +491,7 @@ public class HelloController {
                 sortedStudents.length // Sıralanan veri boyutu
         );
 
-        // 5. Performans kaydını dosyaya yaz
+
         try {
             performans_txt.writePerformansKaydi(kayit);
             System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
@@ -517,10 +502,10 @@ public class HelloController {
 
 
 
-        // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+
         if(chkAdvancedMode.isSelected()){
             try {
-                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+
                 if(ModernList!=null){
                     bolum_sira_txt.writeOgrencimodern(ModernList);
                 }
@@ -536,9 +521,9 @@ public class HelloController {
                 System.out.println(sortedStudents[i].getOgrNo());
             }
 
-            // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
+
             try {
-                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+
                 bolum_sira_txt.writeOgrenciArray(sortedStudents);
                 showAlert("Başarılı", "Sıralanmış öğrenciler 'ogr_no_sira.txt' dosyasına başarıyla yazıldı.");
             } catch (IOException e) {
@@ -603,16 +588,12 @@ public class HelloController {
 
         }
 
-        // 2. Sıralama işlemini gerçekleştir
 
-
-        // 3. Zaman ölçümü SONU
         long endTime = System.nanoTime();
 
-        // Süreyi hesapla (saniye cinsinden)
         double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
 
-        // 4. Performans Kaydını oluştur
+
         String timestamp = LocalDateTime.now().toString();
         PerformansKaydi kayit = new PerformansKaydi(
                 timestamp,
@@ -622,7 +603,7 @@ public class HelloController {
                 sortedStudents.length // Sıralanan veri boyutu
         );
 
-        // 5. Performans kaydını dosyaya yaz
+
         try {
             performans_txt.writePerformansKaydi(kayit);
             System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
@@ -650,9 +631,8 @@ public class HelloController {
                 System.out.println(sortedStudents[i].getOgrNo());
             }
 
-            // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
             try {
-                // FileManager'ın Ogrenci[] dizisini yazabilen metodunu çağırıyoruz.
+
                 sinif_sira_txt.writeOgrenciArray(sortedStudents);
                 ogrenciler_txt.writeOgrenciArray(sortedStudents);
                 ogrenciListesi.setAll(sortedStudents);
@@ -663,9 +643,6 @@ public class HelloController {
                 e.printStackTrace();
             }
         }
-
-        // 7. Sıralanmış öğrencileri dosyaya yaz (Mevcut kod)
-
     }
 
 
@@ -725,16 +702,67 @@ public class HelloController {
     private void onNumarayaGoreAra() {
         String input = txtArama.getText().trim();
         if (input.isEmpty()) return;
+        String type="";
 
         try {
-            int no = Integer.parseInt(input);
-            Ogrenci bulunan = hashTable.searchByOgrNo(no);
-            if (bulunan != null) {
-                tblOgrenciler.getSelectionModel().select(bulunan);
-                tblOgrenciler.scrollTo(bulunan);
-            } else {
-                showAlert("Bulunamadı", "Bu numaraya ait öğrenci yok!");
+            long startTime = System.nanoTime();
+            if(chkAdvancedMode.isSelected()){
+                type = "Gelişmiş mod (Oğrenci no)";
+                int no = Integer.parseInt(input);
+                Ogrenci bulunan = HashmapTable.searchByOgrNo(no);
+                if (bulunan != null) {
+                    tblOgrenciler.getSelectionModel().select(bulunan);
+                    tblOgrenciler.scrollTo(bulunan);
+                } else {
+                    showAlert("Bulunamadı", "Bu numaraya ait öğrenci yok!");
+                }
+            }else{
+                if(radioLineer.isSelected()){
+                    type = "lineer proping (Oğrenci no)";
+                    int no = Integer.parseInt(input);
+                    Ogrenci bulunan = hashTable.searchByOgrNo(no);
+                    if (bulunan != null) {
+                        tblOgrenciler.getSelectionModel().select(bulunan);
+                        tblOgrenciler.scrollTo(bulunan);
+                    } else {
+                        showAlert("Bulunamadı", "Bu numaraya ait öğrenci yok!");
+                    }
+                }else {
+                    type = "Overflow proping (Oğrenci no)";
+                    int no = Integer.parseInt(input);
+                    Ogrenci bulunan = OverflowHashTable.searchByOgrNo(no);
+                    if (bulunan != null) {
+                        tblOgrenciler.getSelectionModel().select(bulunan);
+                        tblOgrenciler.scrollTo(bulunan);
+                    } else {
+                        showAlert("Bulunamadı", "Bu numaraya ait öğrenci yok!");
+                    }
+                }
             }
+            long endTime = System.nanoTime();
+
+
+            double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
+
+
+            String timestamp = LocalDateTime.now().toString();
+            PerformansKaydi kayit = new PerformansKaydi(
+                    timestamp,
+                    "Arama",
+                    type,
+                    durationInSeconds,
+                    10000
+            );
+
+
+            try {
+                performans_txt.writePerformansKaydi(kayit);
+                System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
+            } catch (IOException e) {
+                showAlert("Hata", "Performans dosyasına yazılamadı!");
+                e.printStackTrace();
+            }
+
         } catch (NumberFormatException e) {
             showAlert("Hata", "Geçerli bir numara girin!");
         }
@@ -745,9 +773,76 @@ public class HelloController {
         String ad = txtArama.getText().trim().toLowerCase();
         if (ad.isEmpty()) return;
 
-        ObservableList<Ogrenci> filtreli = ogrenciListesi.filtered(o -> o.getIsim().toLowerCase().contains(ad));
-        tblOgrenciler.setItems(filtreli);
+        String type = "";
+        try {
+            long startTime = System.nanoTime();
+            ObservableList<Ogrenci> filtreli;
+
+            if (chkAdvancedMode.isSelected()) {
+
+                type = "Gelişmiş mod (İsim)";
+                filtreli = FXCollections.observableArrayList();
+                for (Ogrenci o : HashmapTable.getAllStudents()) {
+                    if (o != null && o.getIsim().toLowerCase().contains(ad)) {
+                        filtreli.add(o);
+                    }
+                }
+            } else {
+
+                if (radioLineer.isSelected()) {
+                    type = "Lineer probing (İsim)";
+                    filtreli = FXCollections.observableArrayList();
+                    for (Ogrenci o : hashTable.getAllStudents()) {
+                        if (o != null && o.getIsim().toLowerCase().contains(ad)) {
+                            filtreli.add(o);
+                        }
+                    }
+                } else {
+                    type = "Overflow hashing (İsim)";
+                    filtreli = FXCollections.observableArrayList();
+                    for (Ogrenci o : OverflowHashTable.getAllStudents()) {
+                        if (o != null && o.getIsim().toLowerCase().contains(ad)) {
+                            filtreli.add(o);
+                        }
+                    }
+                }
+            }
+
+            long endTime = System.nanoTime();
+            double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
+
+
+            if (filtreli.isEmpty()) {
+                showAlert("Bulunamadı", "Bu isme ait öğrenci yok!");
+            } else {
+                tblOgrenciler.setItems(filtreli);
+            }
+
+
+            String timestamp = LocalDateTime.now().toString();
+            PerformansKaydi kayit = new PerformansKaydi(
+                    timestamp,
+                    "Arama",
+                    type,
+                    durationInSeconds,
+                    filtreli.size()
+            );
+
+
+            try {
+                performans_txt.writePerformansKaydi(kayit);
+                System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
+            } catch (IOException e) {
+                showAlert("Hata", "Performans dosyasına yazılamadı!");
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            showAlert("Hata", "Arama sırasında bir hata oluştu!");
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void onHashGoster() {
@@ -756,7 +851,7 @@ public class HelloController {
             Parent root = loader.load();
 
             HashViewController controller = loader.getController();
-            controller.setTables(HashmapTable, OverflowHashTable, hashTable); // elindeki hash objelerini buraya gönder
+            controller.setTables(HashmapTable, OverflowHashTable, hashTable);
 
             Stage stage = new Stage();
             stage.setTitle("Hash Tablo Görüntüleyici");
@@ -773,7 +868,78 @@ public class HelloController {
 
     @FXML
     private void onAraTikla() {
-        onNumarayaGoreAra();
+        String input = txtArama.getText().trim();
+        if (input.isEmpty()) return;
+
+        String type = "";
+        try {
+            int sinif = Integer.parseInt(input);
+            long startTime = System.nanoTime();
+            ObservableList<Ogrenci> filtreli;
+
+            if (chkAdvancedMode.isSelected()) {
+
+                type = "Gelişmiş mod (Sınıf)";
+                filtreli = FXCollections.observableArrayList();
+                for (Ogrenci o : HashmapTable.getAllStudents()) {
+                    if (o != null && o.getSinif() == sinif) {
+                        filtreli.add(o);
+                    }
+                }
+            } else {
+
+                if (radioLineer.isSelected()) {
+                    type = "Lineer probing (Sınıf)";
+                    filtreli = FXCollections.observableArrayList();
+                    for (Ogrenci o : hashTable.getAllStudents()) {
+                        if (o != null && o.getSinif() == sinif) {
+                            filtreli.add(o);
+                        }
+                    }
+                } else {
+                    type = "Overflow hashing (Sınıf)";
+                    filtreli = FXCollections.observableArrayList();
+                    for (Ogrenci o : OverflowHashTable.getAllStudents()) {
+                        if (o != null && o.getSinif() == sinif) {
+                            filtreli.add(o);
+                        }
+                    }
+                }
+            }
+
+            long endTime = System.nanoTime();
+            double durationInSeconds = (endTime - startTime) / 1_000_000_000.0;
+
+
+            if (filtreli.isEmpty()) {
+                showAlert("Bulunamadı", "Bu sınıfa ait öğrenci yok!");
+            } else {
+                tblOgrenciler.setItems(filtreli);
+            }
+
+
+            String timestamp = LocalDateTime.now().toString();
+            PerformansKaydi kayit = new PerformansKaydi(
+                    timestamp,
+                    "Arama",
+                    type,
+                    durationInSeconds,
+                    filtreli.size()
+            );
+            try {
+                performans_txt.writePerformansKaydi(kayit);
+                System.out.printf("Performans kaydı başarıyla yazıldı. Süre: %.6f saniye.%n", durationInSeconds);
+            } catch (IOException e) {
+                showAlert("Hata", "Performans dosyasına yazılamadı!");
+                e.printStackTrace();
+            }
+
+        } catch (NumberFormatException e) {
+            showAlert("Hata", "Lütfen geçerli bir sınıf numarası girin!");
+        } catch (Exception e) {
+            showAlert("Hata", "Arama sırasında bir hata oluştu!");
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(String baslik, String mesaj) {
@@ -782,5 +948,23 @@ public class HelloController {
         alert.setHeaderText(null);
         alert.setContentText(mesaj);
         alert.showAndWait();
+    }
+    @FXML
+    private void performansGoster(){
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Performans_view.fxml"));
+            Parent root = loader.load();
+
+
+
+            Stage stage = new Stage();
+            stage.setTitle("Performans Tablo Görüntüleyici");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

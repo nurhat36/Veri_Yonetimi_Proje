@@ -2,6 +2,8 @@ package org.example.veri_yonetimi_proje.hash;
 
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 
+import java.util.List;
+
 public interface HashTable {
     void insert(Ogrenci o);
     Ogrenci searchByOgrNo(int ogrNo);
@@ -11,4 +13,5 @@ public interface HashTable {
     void listAll();
 
     String getDisplayValue(int i);
+    List<Ogrenci> getAllStudents();
 }

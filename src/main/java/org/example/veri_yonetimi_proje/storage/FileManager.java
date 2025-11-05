@@ -14,7 +14,7 @@ public class FileManager {
         this.dataFile = new File(path);
     }
 
-    // Tüm kayıtları oku (ardışık tarama)
+
     public List<Ogrenci> readAll() throws IOException {
         List<Ogrenci> list = new ArrayList<>();
         if (!dataFile.exists()) return list;
@@ -30,7 +30,7 @@ public class FileManager {
         return list;
     }
 
-    // Yeni kayıt ekle (append)
+
     public void append(Ogrenci o) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(dataFile, true))) {
             bw.write(o.toString());
@@ -38,7 +38,7 @@ public class FileManager {
         }
     }
 
-    // Tümünü tekrar yaz (güncelle/silme sonrası)
+
     public void overwriteAll(List<Ogrenci> all) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(dataFile, false))) {
             for (Ogrenci o : all) {
@@ -70,5 +70,23 @@ public class FileManager {
         try (FileWriter fw = new FileWriter(dataFile, true)) {
             fw.write(kayit.toString() + "\n");
         }
+    }
+
+    public List<String> readLines() {
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(dataFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    lines.add(line.trim());
+
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Dosya okunamadı: " + e.getMessage());
+        }
+
+        return lines;
     }
 }

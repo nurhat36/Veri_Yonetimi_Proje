@@ -2,11 +2,13 @@ package org.example.veri_yonetimi_proje.hash;
 
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class OverflowHashTable implements HashTable {
     private Ogrenci[] primary;
-    private int[] next; // primary veya overflow için linked list indices
+    private int[] next;
     private Ogrenci[] overflow;
     private int overflowPtr = 0;
     private int M;
@@ -33,22 +35,21 @@ public class OverflowHashTable implements HashTable {
             primary[idx] = o;
             return;
         }
-        // primary dolu -> overflow'a ekle
+
         if (overflowPtr >= overflowSize) System.out.println("Overflow doldu nexte eklenecek");
         overflow[overflowPtr] = o;
 
-        // eğer primary'nin next'i yoksa bağla, varsa sona ekle
+
         if (next[idx] == -1) {
-            next[idx] = M + overflowPtr; // overflow index encoded
+            next[idx] = M + overflowPtr;
         } else {
-            // son overflow nodunu bul
+
             int currEnc = next[idx];
             while (true) {
                 int realIndex = currEnc - M;
-                // next alanı overflow için -1 kullanamadığımızdan; kullandığımız next[] sadece primary için tutuyoruz
-                // basitçe chained list olarak overflow saklıyoruz: burada linear eklemeyle son bulup ekliyoruz
+
                 if (realIndex == overflowPtr) break; // safety
-                // Bu basit implementasyonda sadece primary next gösterir; okuyucu tüm overflow tarayıp eşleşme arar.
+
                 break;
             }
         }
@@ -59,11 +60,28 @@ public class OverflowHashTable implements HashTable {
     public Ogrenci searchByOgrNo(int ogrNo) {
         int idx = hash(ogrNo);
         if (primary[idx] != null && primary[idx].getOgrNo() == ogrNo) return primary[idx];
-        // overflow'ı tara (basit)
+
         for (int i = 0; i < overflowPtr; i++) {
             if (overflow[i] != null && overflow[i].getOgrNo() == ogrNo) return overflow[i];
         }
         return null;
+    }
+    @Override
+    public List<Ogrenci> getAllStudents() {
+        List<Ogrenci> list = new ArrayList<>();
+
+        for (Ogrenci o : primary) {
+            if (o != null) {
+                list.add(o);
+            }
+        }
+
+        for (Ogrenci o : overflow) {
+            if (o != null) {
+                list.add(o);
+            }
+        }
+        return list;
     }
 
     @Override
@@ -111,14 +129,14 @@ public class OverflowHashTable implements HashTable {
     }
 
     public String getDisplayValue(int index) {
-        // Primary kısmı için
+
         if (index < M) {
             String ogrNo = (primary[index] == null) ? "EMPTY" : String.valueOf(primary[index].getOgrNo());
             String nextVal = (next[index] == -1) ? "NONE" : String.valueOf(next[index]);
             return String.format("%s (next=%s)", ogrNo, nextVal);
         }
 
-        // Overflow kısmı için
+
         int overflowIndex = index - M;
         if (overflowIndex >= 0 && overflowIndex < overflowSize) {
             String ogrNo = (overflow[overflowIndex] == null) ? "EMPTY" : String.valueOf(overflow[overflowIndex].getOgrNo());

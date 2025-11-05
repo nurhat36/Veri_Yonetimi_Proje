@@ -4,275 +4,186 @@ import org.example.veri_yonetimi_proje.hash.LinearProbingHashTable;
 import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 public class LineerSinifAlgoritmaService {
+
+
+
     private Ogrenci[] getCompressedArray(LinearProbingHashTable hashTable) {
         Ogrenci[] sourceArray = hashTable.getTable();
 
-        // 1. Dizi Boyutunu Bul
         int actualSize = 0;
         for (Ogrenci o : sourceArray) {
-            if (o != null) {
-                actualSize++;
-            }
+            if (o != null) actualSize++;
         }
 
-        if (actualSize == 0) {
-            return new Ogrenci[0];
-        }
-
-        // 2. Sıkıştırılmış Diziyi Doldur
         Ogrenci[] compressedArray = new Ogrenci[actualSize];
         int k = 0;
         for (Ogrenci o : sourceArray) {
-            if (o != null) {
-                compressedArray[k++] = o;
-            }
+            if (o != null) compressedArray[k++] = o;
         }
         return compressedArray;
     }
 
-    /**
-     * Sıkıştırılmış öğrenci dizisini, sınıflarına (1, 2, 3, 4) göre
-     * alt dizilere ayırır ve Ogrenci[][] dizisi olarak döndürür.
-     * Dizi index 1: Sınıf 1 öğrencileri, index 2: Sınıf 2 öğrencileri, vb.
-     */
     private Ogrenci[][] groupStudentsByClass(Ogrenci[] students) {
-        // [0] kullanılmıyor. [1], [2], [3], [4] sınıfları temsil eder.
-        Ogrenci[][] groupedArrays = new Ogrenci[5][];
-
-        // a) Sayım (Counting): Her sınıfta kaç öğrenci var?
+        Ogrenci[][] grouped = new Ogrenci[5][];
         int[] counts = new int[5];
+
+
         for (Ogrenci o : students) {
-            int sinif = o.getSinif();
-            // sinif 1, 2, 3 veya 4 olmalı
-            if (sinif >= 1 && sinif <= 4) {
-                counts[sinif]++;
-            }
+            int s = o.getSinif();
+            if (s >= 1 && s <= 4) counts[s]++;
         }
 
-        // b) Alt Dizileri Başlat (Initialize)
-        for (int i = 1; i <= 4; i++) {
-            groupedArrays[i] = new Ogrenci[counts[i]];
+
+        for (int i = 1; i <= 4; i++)
+            grouped[i] = new Ogrenci[counts[i]];
+
+
+        int[] idx = new int[5];
+        for (Ogrenci o : students) {
+            int s = o.getSinif();
+            if (s >= 1 && s <= 4)
+                grouped[s][idx[s]++] = o;
         }
 
-        // c) Doldurma (Populating): Öğrencileri doğru sınıf dizisine yerleştir
-        int[] currentIndices = new int[5]; // Her sınıftaki mevcut indexi tutar
-        for (Ogrenci o : students) {
-            int sinif = o.getSinif();
-            if (sinif >= 1 && sinif <= 4) {
-                groupedArrays[sinif][currentIndices[sinif]] = o;
-                currentIndices[sinif]++;
-            }
-        }
-        return groupedArrays;
+        return grouped;
     }
 
-    // =================================================================================
-    // PUBLIC SIRALAMA METOTLARI
-    // =================================================================================
+
 
     public Ogrenci[] Sinif_sira_bubble_sort(LinearProbingHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        // Her sınıf dizisine Bubble Sort uygula
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                bubbleSort(classArray);
-                // Sıra atama (SinifSira)
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        // Öğrenci nesneleri (referans tip) güncellendiği için sıkıştırılmış diziyi döndür
-        return compressedArray;
-    }
-    public Ogrenci[] Sinif_sira_quick_sort(LinearProbingHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        // Her sınıf grubuna Quick Sort uygula
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                quickSortByOgrNo(classArray, 0, classArray.length - 1);
-
-                // Sıra atama (SinifSira)
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-
-        // Öğrenciler referans olduğu için diziyi döndürmek yeterli
-        return compressedArray;
-    }
-
-// =====================================================
-// Quick Sort Yardımcı Metotları
-// =====================================================
-
-    private void quickSortByOgrNo(Ogrenci[] arr, int low, int high) {
-        if (low < high) {
-            int pivotIndex = partition(arr, low, high);
-            quickSortByOgrNo(arr, low, pivotIndex - 1);
-            quickSortByOgrNo(arr, pivotIndex + 1, high);
-        }
-    }
-
-    private int partition(Ogrenci[] arr, int low, int high) {
-        int pivot = arr[high].getOgrNo(); // Pivot olarak son öğrencinin numarası alınır
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (arr[j].getOgrNo() <= pivot) {
-                i++;
-                // Swap
-                Ogrenci temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
-        }
-
-        // Pivot'u doğru konuma yerleştir
-        Ogrenci temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
-
-        return i + 1;
-    }
-
-    public Ogrenci[] Sinif_sira_merge_sort(LinearProbingHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        // Her sınıf dizisine Merge Sort uygula
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                mergeSort(classArray, classArray.length);
-                // Sıra atama (SinifSira)
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        return compressedArray;
+        return sortAndRank(hashTable, "bubble");
     }
 
     public Ogrenci[] Sinif_sira_insertion_sort(LinearProbingHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        // Her sınıf dizisine Insertion Sort uygula
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                insertionSort(classArray);
-                // Sıra atama (SinifSira)
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        return compressedArray;
+        return sortAndRank(hashTable, "insertion");
     }
 
     public Ogrenci[] Sinif_sira_selection_sort(LinearProbingHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
+        return sortAndRank(hashTable, "selection");
+    }
 
-        // Her sınıf dizisine Selection Sort uygula
+    public Ogrenci[] Sinif_sira_merge_sort(LinearProbingHashTable hashTable) {
+        return sortAndRank(hashTable, "merge");
+    }
+
+    public Ogrenci[] Sinif_sira_quick_sort(LinearProbingHashTable hashTable) {
+        return sortAndRank(hashTable, "quick");
+    }
+
+
+    private Ogrenci[] sortAndRank(LinearProbingHashTable hashTable, String algorithm) {
+        Ogrenci[] compressedArray = getCompressedArray(hashTable);
+        Ogrenci[][] grouped = groupStudentsByClass(compressedArray);
+
         for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                selectionSort(classArray);
-                // Sıra atama (SinifSira)
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
+            Ogrenci[] arr = grouped[i];
+            if (arr == null || arr.length == 0) continue;
+
+            switch (algorithm) {
+                case "bubble" -> bubbleSort(arr);
+                case "insertion" -> insertionSort(arr);
+                case "selection" -> selectionSort(arr);
+                case "merge" -> mergeSort(arr, arr.length);
+                case "quick" -> quickSort(arr, 0, arr.length - 1);
+            }
+
+
+            for (int j = 0; j < arr.length; j++) {
+                arr[j].setSinifSira(j + 1);
             }
         }
         return compressedArray;
     }
 
-    // =================================================================================
-    // PRIVATE SIRALAMA ALGORİTMALARI (GANO'ya göre AZALAN sıralama yapar)
-    // =================================================================================
-
-    // GANO'ya göre azalan Bubble Sort
     private void bubbleSort(Ogrenci[] a) {
         int n = a.length;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (a[j].getGano() > a[j + 1].getGano()) {
-                    Ogrenci temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
+                if (a[j].getGano() < a[j + 1].getGano()) {
+                    swap(a, j, j + 1);
                 }
             }
         }
     }
 
-    // GANO'ya göre azalan Insertion Sort
     private void insertionSort(Ogrenci[] a) {
         int n = a.length;
         for (int i = 1; i < n; ++i) {
             Ogrenci key = a[i];
             int j = i - 1;
 
-            while (j >= 0 && a[j].getGano() > key.getGano()) { // AZALAN SIRALAMA için <
+            while (j >= 0 && a[j].getGano() < key.getGano()) {
                 a[j + 1] = a[j];
-                j = j - 1;
+                j--;
             }
             a[j + 1] = key;
         }
     }
 
-    // GANO'ya göre azalan Selection Sort
     private void selectionSort(Ogrenci[] a) {
         int n = a.length;
         for (int i = 0; i < n - 1; i++) {
             int max_idx = i;
             for (int j = i + 1; j < n; j++) {
-                if (a[j].getGano() > a[max_idx].getGano()) { // AZALAN SIRALAMA için >
+                if (a[j].getGano() > a[max_idx].getGano()) {
                     max_idx = j;
                 }
             }
-            Ogrenci temp = a[max_idx];
-            a[max_idx] = a[i];
-            a[i] = temp;
+            swap(a, i, max_idx);
         }
     }
 
-    // Merge Sort'un ana recursive metodu (GANO'ya göre azalan)
     private void mergeSort(Ogrenci[] a, int n) {
         if (n < 2) return;
         int mid = n / 2;
-        Ogrenci[] l = new Ogrenci[mid];
-        Ogrenci[] r = new Ogrenci[n - mid];
+        Ogrenci[] left = new Ogrenci[mid];
+        Ogrenci[] right = new Ogrenci[n - mid];
 
-        for (int i = 0; i < mid; i++) l[i] = a[i];
-        for (int i = mid; i < n; i++) r[i - mid] = a[i];
+        System.arraycopy(a, 0, left, 0, mid);
+        System.arraycopy(a, mid, right, 0, n - mid);
 
-        mergeSort(l, mid);
-        mergeSort(r, n - mid);
-        merge(a, l, r, mid, n - mid);
+        mergeSort(left, mid);
+        mergeSort(right, n - mid);
+        merge(a, left, right);
     }
 
-    // Merge Sort'un birleştirme (merge) metodu
-    private void merge(Ogrenci[] a, Ogrenci[] l, Ogrenci[] r, int left, int right) {
+    private void merge(Ogrenci[] a, Ogrenci[] l, Ogrenci[] r) {
         int i = 0, j = 0, k = 0;
-        while (i < left && j < right) {
-            // GANO'ya göre azalan sıralama (Büyük GANO öne gelsin)
+        while (i < l.length && j < r.length) {
             if (l[i].getGano() >= r[j].getGano()) {
                 a[k++] = l[i++];
             } else {
                 a[k++] = r[j++];
             }
         }
-        while (i < left) a[k++] = l[i++];
-        while (j < right) a[k++] = r[j++];
+        while (i < l.length) a[k++] = l[i++];
+        while (j < r.length) a[k++] = r[j++];
+    }
+
+    private void quickSort(Ogrenci[] a, int low, int high) {
+        if (low < high) {
+            int pi = partition(a, low, high);
+            quickSort(a, low, pi - 1);
+            quickSort(a, pi + 1, high);
+        }
+    }
+
+    private int partition(Ogrenci[] a, int low, int high) {
+        double pivot = a[high].getGano();
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (a[j].getGano() >= pivot) {
+                i++;
+                swap(a, i, j);
+            }
+        }
+        swap(a, i + 1, high);
+        return i + 1;
+    }
+
+    private void swap(Ogrenci[] a, int i, int j) {
+        Ogrenci temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 }

@@ -4,6 +4,8 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LinearProbingHashTable implements HashTable {
     private Ogrenci[] table;
@@ -48,6 +50,28 @@ public class LinearProbingHashTable implements HashTable {
         return null;
     }
 
+    public List<Ogrenci> searchByClass(int sinif) {
+        List<Ogrenci> sonuc = new ArrayList<>();
+
+        for (Ogrenci o : table) {
+            if (o != null && o.getSinif() == sinif) {
+                sonuc.add(o);
+            }
+        }
+
+        return sonuc;
+    }
+    @Override
+    public List<Ogrenci> getAllStudents() {
+        List<Ogrenci> list = new ArrayList<>();
+        for (Ogrenci o : table) {
+            if (o != null) {
+                list.add(o);
+            }
+        }
+        return list;
+    }
+
     @Override
     public boolean delete(int ogrNo) {
         int idx = hash(ogrNo);
@@ -83,7 +107,7 @@ public class LinearProbingHashTable implements HashTable {
         }
     }
 
-    // --- Dosya İşlemleri ---
+
     private void writeToFile(Ogrenci o) {
         try (FileWriter fw = new FileWriter(FILE_PATH, true)) {
             fw.write(o.toString() + "\n");

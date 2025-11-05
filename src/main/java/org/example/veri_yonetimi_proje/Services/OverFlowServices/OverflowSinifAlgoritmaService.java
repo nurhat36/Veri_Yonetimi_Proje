@@ -5,135 +5,112 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 public class OverflowSinifAlgoritmaService {
 
-    // =====================================================================
-    // 1. Ana tablo + overflow tablodan sıkıştırılmış birleşik dizi oluşturur
-    // =====================================================================
+
     private Ogrenci[] getCompressedArray(OverflowHashTable hashTable) {
         Ogrenci[] mainTable = hashTable.getPrimary();
         Ogrenci[] overflowTable = hashTable.getOverflow();
 
-        int mainCount = 0, overflowCount = 0;
-        for (Ogrenci o : mainTable) if (o != null) mainCount++;
-        for (Ogrenci o : overflowTable) if (o != null) overflowCount++;
+        int total = 0;
+        for (Ogrenci o : mainTable) if (o != null) total++;
+        for (Ogrenci o : overflowTable) if (o != null) total++;
 
-        int total = mainCount + overflowCount;
         if (total == 0) return new Ogrenci[0];
 
         Ogrenci[] compressed = new Ogrenci[total];
-        int idx = 0;
-        for (Ogrenci o : mainTable) if (o != null) compressed[idx++] = o;
-        for (Ogrenci o : overflowTable) if (o != null) compressed[idx++] = o;
+        int index = 0;
+        for (Ogrenci o : mainTable) if (o != null) compressed[index++] = o;
+        for (Ogrenci o : overflowTable) if (o != null) compressed[index++] = o;
 
         return compressed;
     }
 
-    // =====================================================================
-    // 2. Öğrencileri sınıfa göre gruplar
-    // =====================================================================
+
     private Ogrenci[][] groupStudentsByClass(Ogrenci[] students) {
         Ogrenci[][] groupedArrays = new Ogrenci[5][];
         int[] counts = new int[5];
+
 
         for (Ogrenci o : students) {
             int sinif = o.getSinif();
             if (sinif >= 1 && sinif <= 4) counts[sinif]++;
         }
 
+
         for (int i = 1; i <= 4; i++) {
             groupedArrays[i] = new Ogrenci[counts[i]];
         }
 
-        int[] currentIndices = new int[5];
+
+        int[] idx = new int[5];
         for (Ogrenci o : students) {
             int sinif = o.getSinif();
             if (sinif >= 1 && sinif <= 4) {
-                groupedArrays[sinif][currentIndices[sinif]++] = o;
+                groupedArrays[sinif][idx[sinif]++] = o;
             }
         }
 
         return groupedArrays;
     }
 
-    // =====================================================================
-    // 3. Public sıralama metotları
-    // =====================================================================
 
-    public Ogrenci[] Sinif_sira_bubble_sort(OverflowHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
+    private void sortEachClass(Ogrenci[][] groupedArrays, String algorithm) {
         for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                bubbleSort(classArray);
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
+            Ogrenci[] arr = groupedArrays[i];
+            if (arr != null && arr.length > 0) {
+                switch (algorithm) {
+                    case "bubble" -> bubbleSort(arr);
+                    case "insertion" -> insertionSort(arr);
+                    case "selection" -> selectionSort(arr);
+                    case "merge" -> mergeSort(arr, arr.length);
+                    case "quick" -> quickSort(arr, 0, arr.length - 1);
+                }
+
+
+                for (int j = 0; j < arr.length; j++) {
+                    arr[j].setSinifSira(j + 1);
                 }
             }
         }
-        return compressedArray;
+    }
+
+
+    public Ogrenci[] Sinif_sira_bubble_sort(OverflowHashTable hashTable) {
+        return sortByAlgorithm(hashTable, "bubble");
     }
 
     public Ogrenci[] Sinif_sira_insertion_sort(OverflowHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                insertionSort(classArray);
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        return compressedArray;
+        return sortByAlgorithm(hashTable, "insertion");
     }
 
     public Ogrenci[] Sinif_sira_selection_sort(OverflowHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                selectionSort(classArray);
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        return compressedArray;
+        return sortByAlgorithm(hashTable, "selection");
     }
 
     public Ogrenci[] Sinif_sira_merge_sort(OverflowHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                mergeSort(classArray, classArray.length);
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-        return compressedArray;
+        return sortByAlgorithm(hashTable, "merge");
     }
 
-    // =====================================================================
-    // 4. Private sıralama algoritmaları (GANO’ya göre azalan)
-    // =====================================================================
+    public Ogrenci[] Sinif_sira_quick_sort(OverflowHashTable hashTable) {
+        return sortByAlgorithm(hashTable, "quick");
+    }
+
+
+    private Ogrenci[] sortByAlgorithm(OverflowHashTable hashTable, String algorithm) {
+        Ogrenci[] compressed = getCompressedArray(hashTable);
+        Ogrenci[][] grouped = groupStudentsByClass(compressed);
+        sortEachClass(grouped, algorithm);
+        return compressed;
+    }
+
 
     private void bubbleSort(Ogrenci[] a) {
         int n = a.length;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (a[j].getGano() < a[j + 1].getGano()) { // büyük GANO öne gelsin
-                    Ogrenci temp = a[j];
+                if (a[j].getGano() < a[j + 1].getGano()) { // büyük GANO öne
+                    Ogrenci tmp = a[j];
                     a[j] = a[j + 1];
-                    a[j + 1] = temp;
+                    a[j + 1] = tmp;
                 }
             }
         }
@@ -173,8 +150,8 @@ public class OverflowSinifAlgoritmaService {
         Ogrenci[] left = new Ogrenci[mid];
         Ogrenci[] right = new Ogrenci[n - mid];
 
-        for (int i = 0; i < mid; i++) left[i] = a[i];
-        for (int i = mid; i < n; i++) right[i - mid] = a[i];
+        System.arraycopy(a, 0, left, 0, mid);
+        System.arraycopy(a, mid, right, 0, n - mid);
 
         mergeSort(left, mid);
         mergeSort(right, n - mid);
@@ -194,27 +171,9 @@ public class OverflowSinifAlgoritmaService {
         while (j < right) a[k++] = r[j++];
     }
 
-    public Ogrenci[] Sinif_sira_quick_sort(OverflowHashTable hashTable) {
-        Ogrenci[] compressedArray = getCompressedArray(hashTable);
-        Ogrenci[][] groupedArrays = groupStudentsByClass(compressedArray);
-
-        for (int i = 1; i <= 4; i++) {
-            Ogrenci[] classArray = groupedArrays[i];
-            if (classArray != null && classArray.length > 0) {
-                quickSort(classArray, 0, classArray.length - 1);
-                for (int j = 0; j < classArray.length; j++) {
-                    classArray[j].setSinifSira(j + 1);
-                }
-            }
-        }
-
-        return compressedArray;
-    }
-
     private void quickSort(Ogrenci[] arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
-
             quickSort(arr, low, pi - 1);
             quickSort(arr, pi + 1, high);
         }
@@ -223,21 +182,17 @@ public class OverflowSinifAlgoritmaService {
     private int partition(Ogrenci[] arr, int low, int high) {
         double pivot = arr[high].getGano();
         int i = low - 1;
-
         for (int j = low; j < high; j++) {
-            if (arr[j].getGano() >= pivot) { // büyük GANO öne gelsin
+            if (arr[j].getGano() >= pivot) {
                 i++;
                 Ogrenci temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
         }
-
         Ogrenci temp = arr[i + 1];
         arr[i + 1] = arr[high];
         arr[high] = temp;
-
         return i + 1;
     }
-
 }

@@ -1,5 +1,7 @@
 package org.example.veri_yonetimi_proje.model;
 
+import java.util.Locale;
+
 public class PerformansKaydi {
     private final String tarihSaat;
     private final String islemTipi;
@@ -14,11 +16,25 @@ public class PerformansKaydi {
         this.sureSaniye = sureSaniye;
         this.veriBoyutu = veriBoyutu;
     }
-
+    public String getTarihSaat() {
+        return tarihSaat;
+    }
+    public String getIslemTipi() {
+        return islemTipi;
+    }
+    public String getAlgoritmaAdi() {
+        return algoritmaAdi;
+    }
+    public double getSureSaniye() {
+        return sureSaniye;
+    }
+    public int getVeriBoyutu() {
+        return veriBoyutu;
+    }
     @Override
     public String toString() {
-        // Kayıt formatı: TarihSaat,IslemTipi,AlgoritmaAdi,SureSaniye,VeriBoyutu
-        return String.format("%s,%s,%s,%.6f,%d",
+
+        return String.format(Locale.US, "%s,%s,%s,%.6f,%d",
                 tarihSaat, islemTipi, algoritmaAdi, sureSaniye, veriBoyutu);
     }
 }

@@ -5,15 +5,12 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 public class OverflowBolumAlgoritmaService {
 
-    /**
-     * Overflow Hash Table'daki tüm öğrencileri bir diziye sıkıştırır.
-     * (Hem primary hem overflow dizilerini birleştirir)
-     */
+
     private Ogrenci[] getAllOgrenciler(OverflowHashTable hashTable) {
         Ogrenci[] primary = hashTable.getPrimary();
         Ogrenci[] overflow = hashTable.getOverflow();
 
-        // Geçerli (null olmayan) kayıtları say
+
         int count = 0;
         for (int i = 0; i < primary.length; i++) {
             if (primary[i] != null) count++;
@@ -22,7 +19,7 @@ public class OverflowBolumAlgoritmaService {
             if (overflow[i] != null) count++;
         }
 
-        // Hepsini birleştir
+
         Ogrenci[] all = new Ogrenci[count];
         int k = 0;
         for (int i = 0; i < primary.length; i++) {
@@ -35,7 +32,7 @@ public class OverflowBolumAlgoritmaService {
         return all;
     }
 
-    // ===================== BUBBLE SORT =======================
+
     public Ogrenci[] Bolum_sira_bubble_sort(OverflowHashTable hashTable) {
         Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
 
@@ -56,7 +53,7 @@ public class OverflowBolumAlgoritmaService {
         return ogrenciler;
     }
 
-    // ===================== SELECTION SORT =======================
+
     public Ogrenci[] Bolum_sira_selection_sort(OverflowHashTable hashTable) {
         Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
         int n = ogrenciler.length;
@@ -80,7 +77,7 @@ public class OverflowBolumAlgoritmaService {
         return ogrenciler;
     }
 
-    // ===================== INSERTION SORT =======================
+
     public Ogrenci[] ogr_no_sira_insertion_sort(OverflowHashTable hashTable) {
         Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
         int n = ogrenciler.length;
@@ -103,7 +100,7 @@ public class OverflowBolumAlgoritmaService {
         return ogrenciler;
     }
 
-    // ===================== MERGE SORT =======================
+
     public Ogrenci[] Bolum_sira_merge_sort(OverflowHashTable hashTable) {
         Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
         mergeSort(ogrenciler, 0, ogrenciler.length - 1);
@@ -147,7 +144,7 @@ public class OverflowBolumAlgoritmaService {
         while (i < n1) arr[k++] = L[i++];
         while (j < n2) arr[k++] = R[j++];
     }
-    // ===================== QUICK SORT =======================
+
     public Ogrenci[] Bolum_sira_quick_sort(OverflowHashTable hashTable) {
         Ogrenci[] ogrenciler = getAllOgrenciler(hashTable);
         quickSort(ogrenciler, 0, ogrenciler.length - 1);

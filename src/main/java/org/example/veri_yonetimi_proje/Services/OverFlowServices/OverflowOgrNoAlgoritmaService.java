@@ -7,7 +7,7 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 public class OverflowOgrNoAlgoritmaService {
 
-    // 1️⃣ Bubble Sort
+
     public Ogrenci[] ogr_no_sira_bubble_sort(OverflowHashTable hashTable) {
         Ogrenci[] allStudents = getAllStudents(hashTable);
         int n = allStudents.length;
@@ -24,7 +24,7 @@ public class OverflowOgrNoAlgoritmaService {
         return allStudents;
     }
 
-    // 2️⃣ Merge Sort
+
     public Ogrenci[] ogr_no_sira_merge_sort(OverflowHashTable hashTable) {
         Ogrenci[] allStudents = getAllStudents(hashTable);
         mergeSort(allStudents, allStudents.length);
@@ -61,7 +61,7 @@ public class OverflowOgrNoAlgoritmaService {
             a[k++] = right[j++];
     }
 
-    // 3️⃣ Insertion Sort
+
     public Ogrenci[] ogr_no_sira_insertion_sort(OverflowHashTable hashTable) {
         Ogrenci[] allStudents = getAllStudents(hashTable);
 
@@ -77,7 +77,7 @@ public class OverflowOgrNoAlgoritmaService {
         return allStudents;
     }
 
-    // 4️⃣ Selection Sort
+
     public Ogrenci[] ogr_no_sira_selection_sort(OverflowHashTable hashTable) {
         Ogrenci[] allStudents = getAllStudents(hashTable);
         int n = allStudents.length;
@@ -97,9 +97,9 @@ public class OverflowOgrNoAlgoritmaService {
         return allStudents;
     }
 
-    // 🔹 Yardımcı metod: Primary + Overflow birleşimi
+
     private Ogrenci[] getAllStudents(OverflowHashTable hashTable) {
-        // primary ve overflow'u birleştir
+
         Ogrenci[] primary = hashTable.getPrimary();
         Ogrenci[] overflow = hashTable.getOverflow();
 
@@ -119,7 +119,7 @@ public class OverflowOgrNoAlgoritmaService {
 
         return all;
     }
-    // 5️⃣ Quick Sort
+
     public Ogrenci[] ogr_no_sira_quick_sort(OverflowHashTable hashTable) {
         Ogrenci[] allStudents = getAllStudents(hashTable);
         quickSort(allStudents, 0, allStudents.length - 1);
@@ -143,14 +143,14 @@ public class OverflowOgrNoAlgoritmaService {
             if (arr[j].getOgrNo() <= pivot) {
                 i++;
 
-                // swap
+
                 Ogrenci temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
         }
 
-        // pivot'u doğru yere yerleştir
+
         Ogrenci temp = arr[i + 1];
         arr[i + 1] = arr[high];
         arr[high] = temp;

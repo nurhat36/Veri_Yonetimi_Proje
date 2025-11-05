@@ -42,6 +42,7 @@
             <Button onAction="#onOgrenciSil" prefWidth="250.0" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" text="Öğrenci Sil" />
             <Button onAction="#onTumListele" prefWidth="250.0" text="Tüm Öğrencileri Listele" />
             <Button onAction="#onHashGoster" prefWidth="250.0" text="Hash Tablosunu Göster" />
+         <Button onAction="#performansGoster" prefWidth="250.0" text="Performanslar" />
               <CheckBox fx:id="chkAdvancedMode" mnemonicParsing="false" onAction="#checkcontrol" text="Gelişmiş Mod Aktif" />
             <!-- Hashleme Yöntemi Seçimi (Sadece Gelişmiş Mod Kapalıyken Aktif) -->
             <Label text="Hashleme Yöntemi Seçin:" />
@@ -168,7 +169,7 @@
                 <TextField fx:id="txtArama" prefWidth="250" promptText="Öğrenci Adı veya Numarası Girin" />
                 <Button onAction="#onNumarayaGoreAra" text="Numaraya Göre Ara" />
                 <Button onAction="#onAdaGoreAra" text="Ada Göre Ara" />
-                <Button onAction="#onAraTikla" text="Genel Ara" />
+                <Button onAction="#onAraTikla" text="sınıfı listele" />
             </HBox>
 
             <TableView fx:id="tblOgrenciler" VBox.vgrow="ALWAYS">

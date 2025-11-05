@@ -4,7 +4,9 @@ import org.example.veri_yonetimi_proje.model.Ogrenci;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HashMapTable implements HashTable {
@@ -19,11 +21,15 @@ public class HashMapTable implements HashTable {
     public void insert(Ogrenci o) {
         if (o == null) return;
 
-        // Aynı öğrenci numarası varsa güncelleme yapar
+
         table.put(o.getOgrNo(), o);
         System.out.println("HashMap'e eklendi: " + o.getOgrNo());
 
         writeToFile(o);
+    }
+    @Override
+    public List<Ogrenci> getAllStudents() {
+        return new ArrayList<>(table.values());
     }
 
     @Override
@@ -57,7 +63,7 @@ public class HashMapTable implements HashTable {
         }
     }
 
-    // --- Dosya İşlemleri ---
+
     private void writeToFile(Ogrenci o) {
         try (FileWriter fw = new FileWriter(FILE_PATH, true)) {
             fw.write(o.toString() + "\n");
@@ -76,7 +82,7 @@ public class HashMapTable implements HashTable {
         }
     }
 
-    // --- Yardımcı Metotlar ---
+
     public HashMap<Integer, Ogrenci> getTable() {
         return table;
     }
